@@ -1,0 +1,12 @@
+C:\Users\Avel\Desktop\VKApi\VKApi\bin\Debug\VKApi.exe.config
+C:\Users\Avel\Desktop\VKApi\VKApi\bin\Debug\VKApi.exe
+C:\Users\Avel\Desktop\VKApi\VKApi\bin\Debug\VKApi.pdb
+C:\Users\Avel\Desktop\VKApi\VKApi\bin\Debug\Flurl.dll
+C:\Users\Avel\Desktop\VKApi\VKApi\bin\Debug\Flurl.Http.dll
+C:\Users\Avel\Desktop\VKApi\VKApi\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Avel\Desktop\VKApi\VKApi\bin\Debug\Flurl.xml
+C:\Users\Avel\Desktop\VKApi\VKApi\bin\Debug\Flurl.Http.xml
+C:\Users\Avel\Desktop\VKApi\VKApi\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Avel\Desktop\VKApi\VKApi\obj\Debug\VKApi.csprojResolveAssemblyReference.cache
+C:\Users\Avel\Desktop\VKApi\VKApi\obj\Debug\VKApi.exe
+C:\Users\Avel\Desktop\VKApi\VKApi\obj\Debug\VKApi.pdb
