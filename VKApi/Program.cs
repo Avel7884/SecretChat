@@ -17,19 +17,12 @@ namespace VKApi
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
             var id = 208673438.ToString();// Console.ReadLine();
-            var connection = new VKConnection("6495077",id,"nBDKAxM9kSRGRGsVOxv4");
+            var connection = new VKConnection("6495077", id, "nBDKAxM9kSRGRGsVOxv4");
             connection.Connect();
             var dialog = connection.StartDialog(new[] { "134650397" });
-            while(execConsoleCommand(dialog));
+            while (execConsoleCommand(dialog)) ;
             dialog.Dispose();
-=======
-            var connecter = new VKConnecter("6495077");
-            var dialog = connecter.Connect(new string[]{});
-            for (int i = 0; i < 5; i++)
-                execConsoleCommand(dialog);
->>>>>>> 4094c9b0b485b1c0cf4555c97ecd1b740ddc1ab0
         }
 
         private static bool execConsoleCommand(IDialog dial)
@@ -59,29 +52,29 @@ namespace VKApi
 
         //static void InitToken()
         //{
-            //private const string home = "http://94.31.140.217:8000/";
-            //System.Diagnostics.Process.Start(autrize_request);
-            //var code = Console.ReadLine();
-            //var res = String.Format("https://oauth.vk.com/access_token?client_id=6495077&client_secret={0}&code={1}", secret, code).GetAsync().Result;
-            //Console.WriteLine(res);
-            //var token = res.Content.ReadAsStringAsync().Result.Split(new []{'"'},5)[3];
-            //res = String.Format("https://api.vk.com/method/messages.send?chat_id=25&message=Test%20with%20Flurl&access_token={0}&v=5.78",token).GetAsync().Result;
-            //for(int i=0;i<1000;i++)
-            //    res=String.Format("https://api.vk.com/method/messages.send?chat_id=25&message=Test%20with%20Flurl&access_token={0}&v=5.78", token).GetAsync().Result;
-            //Console.WriteLine(res);
-            //Console.ReadKey();
-            //WebServer ws = new WebServer(request => {
-            //    code = request.QueryString["code"];
-            //    return "";
-            //}, "http://127.0.0.1:8000/");
-            //ws.Run();
-            //while (code == null)
-            //    Thread.Sleep(10);
-            //ws.Stop();
-            //Console.WriteLine(code);
+        //private const string home = "http://94.31.140.217:8000/";
+        //System.Diagnostics.Process.Start(autrize_request);
+        //var code = Console.ReadLine();
+        //var res = String.Format("https://oauth.vk.com/access_token?client_id=6495077&client_secret={0}&code={1}", secret, code).GetAsync().Result;
+        //Console.WriteLine(res);
+        //var token = res.Content.ReadAsStringAsync().Result.Split(new []{'"'},5)[3];
+        //res = String.Format("https://api.vk.com/method/messages.send?chat_id=25&message=Test%20with%20Flurl&access_token={0}&v=5.78",token).GetAsync().Result;
+        //for(int i=0;i<1000;i++)
+        //    res=String.Format("https://api.vk.com/method/messages.send?chat_id=25&message=Test%20with%20Flurl&access_token={0}&v=5.78", token).GetAsync().Result;
+        //Console.WriteLine(res);
+        //Console.ReadKey();
+        //WebServer ws = new WebServer(request => {
+        //    code = request.QueryString["code"];
+        //    return "";
+        //}, "http://127.0.0.1:8000/");
+        //ws.Run();
+        //while (code == null)
+        //    Thread.Sleep(10);
+        //ws.Stop();
+        //Console.WriteLine(code);
 
-            //var tkn = String.Format("https://oauth.vk.com/access_token?client_id=1&client_secret={0}&redirect_uri={1}&code={2}", secret, home, code).GetAsync().Result;
-            //Console.WriteLine(tkn.Content.);
+        //var tkn = String.Format("https://oauth.vk.com/access_token?client_id=1&client_secret={0}&redirect_uri={1}&code={2}", secret, home, code).GetAsync().Result;
+        //Console.WriteLine(tkn.Content.);
         //}
 
         //static string output = "";
