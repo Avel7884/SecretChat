@@ -60,5 +60,10 @@ namespace VKApi
                 timer.Start();
             };
         }
+
+        public string GetName(string id)
+        {
+            return "Joe Doe";
+        }
     }
 }
