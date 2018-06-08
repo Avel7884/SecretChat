@@ -14,7 +14,6 @@ namespace VKApi
     {
         private Timer timer;
         private const string autrizeRequest = "https://oauth.vk.com/authorize?client_id={0}&display=popup&scope=4098&response_type=token&v={1}";
-        private const string tokenRequest = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}";
 
         private Regex rx = new Regex(@"https://oauth.vk.com/blank.html#access_token=([0-9a-f]+)&expires_in=(\d+)&user_id=(\d+)",
             RegexOptions.Compiled);
@@ -36,14 +35,6 @@ namespace VKApi
 
         public VKDialog Connect()
         {
-            timer = new Timer(24 * 60 * 60);
-            timer.AutoReset = true;
-            timer.Elapsed += (s, e) => 
-            {
-                timer.Stop();
-//                Token = getToken();
-                timer.Start();
-            };
             getToken();
             return new VKDialog(()=>token, id,user, ver);
         }
@@ -53,8 +44,21 @@ namespace VKApi
             System.Diagnostics.Process.Start(String.Format(autrizeRequest, id, ver));
             Console.WriteLine("Write link:");
             var link = Console.ReadLine();
-            Token = rx.Match(link).Groups[1].Value;
-            user = rx.Match(link).Groups[3].Value;
+            var groups = rx.Match(link).Groups;
+            Token = groups[1].Value;
+            user = groups[3].Value;
+            SetTimer(int.Parse(groups[2].Value));
+        }
+
+        private void SetTimer(int interval)
+        {
+            timer = new Timer(interval) {AutoReset = true};
+            timer.Elapsed += (s, e) => 
+            {
+                timer.Stop();
+                getToken();
+                timer.Start();
+            };
         }
     }
 }
