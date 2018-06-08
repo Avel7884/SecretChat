@@ -18,15 +18,13 @@ namespace VKApi
         private Regex rx = new Regex(@"https://oauth.vk.com/blank.html#access_token=([0-9a-f]+)&expires_in=(\d+)&user_id=(\d+)",
             RegexOptions.Compiled);
 
-        private string secret;
         private string id;
         private string ver;
         private string token;
         private string user;
 
-        public VKConnecter(string clientID, string secretCode, string ver = "5.78")
+        public VKConnecter(string clientID, string ver = "5.78")
         {
-            secret = secretCode;
             id = clientID;
             this.ver = ver;
         }
@@ -36,7 +34,7 @@ namespace VKApi
         public VKDialog Connect()
         {
             getToken();
-            return new VKDialog(()=>token, id,user, ver);
+            return new VKDialog(()=>Token, id, user, ver);
         }
 
         private void getToken()

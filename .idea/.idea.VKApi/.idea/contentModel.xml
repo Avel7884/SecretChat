@@ -5,11 +5,13 @@
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="VKApi" t="IncludeRecursive">
         <e p="App.config" t="Include" />
-        <e p="CryptoStream.cs" t="Include" />
         <e p="Extensions.cs" t="Include" />
         <e p="IConnecter.cs" t="Include" />
         <e p="IDialog.cs" t="Include" />
+        <e p="IKeyReader.cs" t="Include" />
+        <e p="IStringStream.cs" t="Include" />
         <e p="KeyReader.cs" t="Include" />
+        <e p="OneTimePasCryptoStream.cs" t="Include" />
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
@@ -19,6 +21,7 @@
         <e p="VKConnecter.cs" t="Include" />
         <e p="VKDialog.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
+        <e p="key.crypt" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
       </e>
