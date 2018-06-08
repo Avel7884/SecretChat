@@ -17,10 +17,12 @@ namespace VKApi
     {
         static void Main(string[] args)
         {
-            var connecter = new VKConnecter("6495077", "nBDKAxM9kSRGRGsVOxv4");
-            var dialog = connecter.Connect(new string[0]);
-            for (int i = 0; i < 5; i++)
-                execConsoleCommand(dialog);
+            var id = 208673438.ToString();// Console.ReadLine();
+            var connection = new VKConnection("6495077",id,"nBDKAxM9kSRGRGsVOxv4");
+            connection.Connect();
+            var dialog = connection.StartDialog(new[] { "134650397" });
+            while(execConsoleCommand(dialog));
+            dialog.Dispose();
         }
 
         private static bool execConsoleCommand(IDialog dial)
@@ -34,12 +36,14 @@ namespace VKApi
                     return dial.sendMessage(res[1]);
                 case "r":
                     return printMSGS();
+                case "q":
+                    return false;
                 default:
                     throw new Exception();
             }
             bool printMSGS()
             {
-                var tmp =dial.getMessages(out string[] asd);
+                var tmp = dial.getMessages(out string[] asd);
                 foreach (var msg in asd)
                     Console.WriteLine(msg);
                 return tmp;

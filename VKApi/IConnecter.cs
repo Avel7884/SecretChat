@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace VKApi
 {
-    interface IConnecter<T> where T : IDialog
+    interface IConnection<T> where T : IDialog
     {
-        T Connect(string[] ids);
-        string GetName(string id);
+        void Connect();
+        T StartDialog(string[] ids);
+        Dictionary<string,string> GetFriends();
     }
 }
