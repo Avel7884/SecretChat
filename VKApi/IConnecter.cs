@@ -8,7 +8,7 @@ namespace VKApi
 {
     interface IConnecter<T> where T : IDialog
     {
-        T Connect();
+        T Connect(string[] ids);
         string GetName(string id);
     }
 }

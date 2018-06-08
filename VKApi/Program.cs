@@ -17,24 +17,8 @@ namespace VKApi
     {
         static void Main(string[] args)
         {
-            var connecter = new VKConnecter("6495077");
+            var connecter = new VKConnecter("6495077", "nBDKAxM9kSRGRGsVOxv4");
             var dialog = connecter.Connect();
-            var cryptoStream = new OneTimePasCryptoStream(Console.In, Console.Out, new KeyReader());
-            while (true)
-            {
-                string[] messages;
-                if (dialog.getMessages(out messages))
-                {
-                    for (int i = 0; i < messages.Length; ++i)
-                        cryptoStream.WriteLine(messages[i]);
-                }
-                string str;
-                while (cryptoStream.TryReadLine(out str))
-                {
-                    dialog.sendMessage(str);
-                }
-            }
-
             for (int i = 0; i < 5; i++)
                 execConsoleCommand(dialog);
         }

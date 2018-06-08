@@ -31,7 +31,7 @@ namespace VKApi
 
         public string Token { get => token; private set => token = value; }
 
-        public VKDialog Connect()
+        public VKDialog Connect(string[] ids)
         {
             getToken();
             return new VKDialog(()=>Token, id, user, ver);
