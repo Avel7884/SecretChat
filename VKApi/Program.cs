@@ -17,7 +17,7 @@ namespace VKApi
     {
         static void Main(string[] args)
         {
-            var connecter = new VKConnecter("6495077", "nBDKAxM9kSRGRGsVOxv4");
+            var connecter = new VKConnecter("6495077");
             var dialog = connecter.Connect(new string[]{});
             for (int i = 0; i < 5; i++)
                 execConsoleCommand(dialog);
