@@ -17,8 +17,7 @@ namespace VKApi
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Write your vk id:");
-            var connecter = new VKConnecter("6495077", "nBDKAxM9kSRGRGsVOxv4", Console.ReadLine());
+            var connecter = new VKConnecter("6495077", "nBDKAxM9kSRGRGsVOxv4");
             var dialog = connecter.Connect();
             for (int i = 0; i < 5; i++)
                 execConsoleCommand(dialog);

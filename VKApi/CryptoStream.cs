@@ -13,11 +13,6 @@ namespace VKApi
             this.underlayingStream = underlayingStream;
             this.keyReader = keyReader;
         }
-        
-        public override void Flush()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
@@ -28,17 +23,7 @@ namespace VKApi
                 buffer[i] = (byte) (partOfKey[i - offset] ^ buffer[i]);
             return read;
         }
-
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void SetLength(long value)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         public override void Write(byte[] buffer, int offset, int count)
         {
             var toWrite = new byte[count];
@@ -48,11 +33,34 @@ namespace VKApi
                 toWrite[i - offset] = (byte) (partOfKey[i - offset] ^ buffer[i]);
             underlayingStream.Write(toWrite, 0, count);
         }
+        
+        public override bool CanRead => underlayingStream.CanRead;
 
-        public override bool CanRead { get; }
-        public override bool CanSeek { get; }
-        public override bool CanWrite { get; }
-        public override long Length { get; }
-        public override long Position { get; set; }
+        public override bool CanSeek => underlayingStream.CanSeek;
+
+        public override bool CanWrite => underlayingStream.CanWrite;
+
+        public override void Flush()
+        {
+            underlayingStream.Flush();
+        }
+
+        public override long Length => underlayingStream.Length;
+
+        public override long Position
+        {
+            get => underlayingStream.Position;
+            set => underlayingStream.Position = value;
+        }
+
+        public override long Seek(long offset, SeekOrigin origin)
+        {
+            return underlayingStream.Seek(offset, origin);
+        }
+
+        public override void SetLength(long value)
+        {
+            underlayingStream.SetLength(value);
+        }
     }
 }

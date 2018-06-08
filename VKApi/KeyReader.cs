@@ -6,14 +6,13 @@ namespace VKApi
 {
     public class KeyReader : Stream, IDisposable
     {
-        private string pathToKey;
+        private const string pathToKey = "key.crypt";
         private StreamReader keyReader;
         private bool isDisposed;
         
-        public KeyReader(string pathToKey)
+        public KeyReader()
         {
             isDisposed = false;
-            this.pathToKey = pathToKey;
             keyReader = new StreamReader(pathToKey);
         }
 
@@ -38,7 +37,7 @@ namespace VKApi
         {
             var temporaryBuffer = new char[count];
             readExactlyCount(temporaryBuffer, count);
-
+    
             for (var i = offset; i < count + offset; ++i)
                 buffer[i] = (byte) temporaryBuffer[i - offset];
             return count;
@@ -55,7 +54,7 @@ namespace VKApi
             }
         }
 
-        public override long Seek(long offset, SeekOrigin origin)
+        public override long Seek(long offset,     SeekOrigin origin)
         {
             throw new System.NotImplementedException();
         }
