@@ -17,8 +17,7 @@ namespace VKApi
     {
         static void Main(string[] args)
         {
-            var id = 208673438.ToString();// Console.ReadLine();
-            var connection = new VKConnection("6495077", id, "nBDKAxM9kSRGRGsVOxv4");
+            var connection = new VKConnection("6495077");
             connection.Connect();
             var dialog = connection.StartDialog(new[] { "134650397" });
             while (execConsoleCommand(dialog)) ;

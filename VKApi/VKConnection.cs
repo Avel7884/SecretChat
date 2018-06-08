@@ -22,10 +22,9 @@ namespace VKApi
         private string ver;
         private string user;
 
-        public VKConnection(string clientID, string userID, string secretCode, string ver = "5.78")
+        public VKConnection(string clientID, string ver = "5.78")
         {
             id = clientID;
-            user = userID;
             this.ver = ver;
             InitTimer();
         }
