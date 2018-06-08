@@ -18,14 +18,16 @@ namespace VKApi
         private Regex rx = new Regex(@"https://oauth.vk.com/blank.html#access_token=([0-9a-f]+)&expires_in=(\d+)&user_id=(\d+)",
             RegexOptions.Compiled);
 
-        private string secret;
         private string id;
         private string ver;
         private string user;
 
+<<<<<<< HEAD:VKApi/VKConnection.cs
         public VKConnection(string clientID, string userID, string secretCode, string ver = "5.78")
+=======
+        public VKConnecter(string clientID, string ver = "5.78")
+>>>>>>> 4094c9b0b485b1c0cf4555c97ecd1b740ddc1ab0:VKApi/VKConnecter.cs
         {
-            secret = secretCode;
             id = clientID;
             user = userID;
             this.ver = ver;
@@ -46,6 +48,7 @@ namespace VKApi
 
         public VKDialog StartDialog(string[] ids)
         {
+<<<<<<< HEAD:VKApi/VKConnection.cs
             var dialogMembers = new StringBuilder(user);
             foreach(var id in ids)
             {
@@ -53,6 +56,10 @@ namespace VKApi
                 dialogMembers.Append(id);
             }
             return new VKDialog(()=>Token, user, dialogMembers.ToString(), ver);
+=======
+            getToken();
+            return new VKDialog(()=>Token, id, user, ver);
+>>>>>>> 4094c9b0b485b1c0cf4555c97ecd1b740ddc1ab0:VKApi/VKConnecter.cs
         }
 
         public Dictionary<string, string> GetFriends()
