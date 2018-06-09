@@ -14,7 +14,7 @@ namespace VKApi
     {
         private Func<string> token;
         private string ver;
-        private string last_message_id;
+        private string lastMessageId;
         private string user;
         private string chat;
         private const int chatBias = 2000000000;
@@ -24,7 +24,7 @@ namespace VKApi
             this.token = token;
             this.ver = ver;
             this.user = user;
-            last_message_id = "0";
+            lastMessageId = "0";
             if (!TryToConnectToExistedDialog())
                 CreateDialog(members);
         }
@@ -47,10 +47,11 @@ namespace VKApi
             return true;
         }
 
-        private string commandCreateChat = "https://api.vk.com/method/messages.createChat?user_ids={0}&title=chat&v={1}&access_token={2}";
+        private const string commandCreateChat = "https://api.vk.com/method/messages.createChat?user_ids={0}&title=chat&v={1}&access_token={2}";
+
         private void CreateDialog(string members)
         {
-            var res = String.Format(commandCreateChat, members, ver, token()).GetAsync().Result.Content.ReadAsStringAsync().Result;
+            var res = string.Format(commandCreateChat, members, ver, token()).GetAsync().Result.Content.ReadAsStringAsync().Result;
             chat = (string)JObject.Parse(res).GetValue("response"); //JsonConvert.DeserializeObject<Dictionary<string, string>>(res)[];
         }
 
