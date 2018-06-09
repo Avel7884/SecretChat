@@ -10,17 +10,17 @@ namespace SecretChat
     {
         private Func<string> token;
         private string ver;
-        private string lastMessageId;
+        private int lastMessageId;
         private string user;
         private string chat;
-        private const int chatBias = 2000000000;
+        private const int chatBias = (int)2e9;
 
         public VKDialog(Func<string> token, string user, string members, string ver)
         {
             this.token = token;
             this.ver = ver;
             this.user = user;
-            lastMessageId = "0";
+            lastMessageId = 0;
             if (!TryToConnectToExistedDialog())
                 CreateDialog(members);
         }
@@ -51,16 +51,17 @@ namespace SecretChat
             chat = (string)JObject.Parse(res).GetValue("response"); //JsonConvert.DeserializeObject<Dictionary<string, string>>(res)[];
         }
 
-        public bool hasCallback => false;
-        public event EventHandler Callback;
-
-        private const string commandGet = "https://api.vk.com/method/messages.get?access_token={0}&v={1}";
+        private const string commandGet = "https://api.vk.com/method/messages.get?access_token={0}&v={1}&last_message_id={2}";
         public bool getMessages(out List<string> messages)
         {
-            var res = string.Format(commandGet, token(), ver).GetAsync().Result.Content.ReadAsStringAsync().Result;
+            var res = string.Format(commandGet, token(), ver, lastMessageId).GetAsync().Result.Content.ReadAsStringAsync().Result;
             messages = JObject.Parse(res)["response"]["items"]
                             .Where(x => x.SelectToken("chat_id")?.ToString() == chat)
-                            .Select(x => x["body"].ToString())
+                            .Select(x =>
+                            {
+                                lastMessageId = Math.Max(lastMessageId, int.Parse(x.SelectToken("id").ToString()));
+                                return x.SelectToken("body").ToString();
+                            })
                             .Reverse()
                             .ToList();
             return messages.Count != 0;

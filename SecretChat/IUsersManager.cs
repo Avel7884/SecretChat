@@ -2,9 +2,9 @@
 
 namespace SecretChat
 {
-    public interface IFriendsManager
+    public interface IUsersManager
     {
         string GetNameById(string id);
-        IEnumerable<string> GetIdsByName(string name);
+        List<string> GetIdsByUser(string name);
     }
 }

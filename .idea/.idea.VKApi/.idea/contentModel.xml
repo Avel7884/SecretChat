@@ -7,14 +7,14 @@
         <e p="App.config" t="Include" />
         <e p="ConsoleInterractor.cs" t="Include" />
         <e p="Extensions.cs" t="Include" />
+        <e p="FileKeyReader.cs" t="Include" />
         <e p="IConnecter.cs" t="Include" />
         <e p="IDialog.cs" t="Include" />
-        <e p="IFriendsManager.cs" t="Include" />
         <e p="IInteracter.cs" t="Include" />
         <e p="IKeyReader.cs" t="Include" />
         <e p="IMessageStream.cs" t="Include" />
         <e p="IMessanger.cs" t="Include" />
-        <e p="KeyReader.cs" t="Include" />
+        <e p="IUsersManager.cs" t="Include" />
         <e p="Messanger.cs" t="Include" />
         <e p="OneTimePasCryptoStream.cs" t="Include" />
         <e p="Program.cs" t="Include" />
@@ -25,6 +25,7 @@
         <e p="StealedWebServr.cs" t="Include" />
         <e p="VKConnection.cs" t="Include" />
         <e p="VKDialog.cs" t="Include" />
+        <e p="VkUsersManager.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="key.crypt" t="Include" />
         <e p="obj" t="ExcludeRecursive" />

@@ -30,8 +30,10 @@ namespace SecretChat
 
         public void SendMessage()
         {
-            if (messageStream.CanReadLine())
-                dialog.sendMessage(messageStream.ReadLine());
+            if (!messageStream.CanReadLine()) 
+                return;
+            var message = messageStream.ReadLine();
+            while (!dialog.sendMessage(message)) ;
         }
 
         public void GetMessages()
@@ -39,7 +41,6 @@ namespace SecretChat
             if (!dialog.getMessages(out var messages)) return;
             foreach (var message in messages)
             {
-                Console.WriteLine(message);
                 messageStream.WriteLine("", message);
             }
         }

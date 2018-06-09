@@ -2,12 +2,12 @@
 
 namespace SecretChat
 {
-    public class KeyReader : IKeyReader
+    public class FileKeyReader : IKeyReader
     {
         private const string pathToKey = "../../key.crypt";
         private BinaryReader keyReader;
         
-        public KeyReader()
+        public FileKeyReader()
         {
             keyReader = new BinaryReader(File.Open(pathToKey, FileMode.Open));
         }
@@ -17,17 +17,16 @@ namespace SecretChat
             keyReader.Close();
         }
 
-        public int Read(char[] buffer, int offset, int count)
+        public void ReadKey(byte[] buffer, int offset, int count)
         {
-            var temporaryBuffer = new char[count];
+            var temporaryBuffer = new byte[count];
             ReadExactlyCount(temporaryBuffer, count);
     
             for (var i = offset; i < count + offset; ++i)
                 buffer[i] = temporaryBuffer[i - offset];
-            return count;
         }
 
-        private void ReadExactlyCount(char[] buffer, int count)
+        private void ReadExactlyCount(byte[] buffer, int count)
         {
             var readed = keyReader.Read(buffer, 0, count);
             while (readed != count)

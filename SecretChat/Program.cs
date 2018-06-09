@@ -12,26 +12,21 @@ namespace SecretChat
         {
             var container = new StandardKernel();
             BindContainer(container);
+            
             var messanger = container.Get<IMessanger>(); //new Messenger(new VkConnecter("6495077", new ConsoleInterractor()), new OneTimePasCryptoStream(Console.In, Console.Out, new KeyReader()), new ConsoleInterractor());
-//            var connection = 
-//            messanger.LogIn();
-//            messanger.CreateChat();
+
             while (true)
             {
                 messanger.GetMessages();
                 messanger.SendMessage();
             }
-//            connection.Connect();
-//            var dialog = connection.StartDialog(new string[0]);//new[] { "134650397" }
-//            while (execConsoleCommand(dialog));
-//            dialog.Dispose();
         }
 
         private static void BindContainer(IBindingRoot container)
         {
             container.Bind<IInteracter>().To<ConsoleInterractor>().InSingletonScope();
             container.Bind<IMessageStream>().To<OneTimePasCryptoStream>();
-            container.Bind<IKeyReader>().To<KeyReader>();
+            container.Bind<IKeyReader>().To<FileKeyReader>();
             container.Bind<TextReader>().ToConstant(Console.In);
             container.Bind<TextWriter>().ToConstant(Console.Out);
             container.Bind<IDialog>().To<VKDialog>();

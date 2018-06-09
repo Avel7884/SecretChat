@@ -18,6 +18,7 @@ namespace SecretChat
         private string id;
         private string ver;
         private string user;
+        private VKUsersManager usersManager;
 
         public VKConnecter(string clientID, IInteracter interactor, string ver = "5.78")
         {
@@ -37,7 +38,13 @@ namespace SecretChat
         private string Token { get ; set ; }
 
         public void Connect()=>
+            Init();
+
+        private void Init()
+        {
             InitToken();
+            usersManager = new VKUsersManager(() => Token, ver);
+        }
 
         public VKDialog StartDialog(IEnumerable ids)
         {

@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace SecretChat
@@ -24,26 +27,30 @@ namespace SecretChat
         public string ReadLine()
         {
             var toRead = UnderlayingReader.ReadLine();
-            var buffer = new char[toRead.Length];
-            keyReader.Read(buffer, 0, toRead.Length);
-            
-            for (int i = 0; i < toRead.Length; ++i)
-                buffer[i] = (char) (toRead[i] ^ buffer[i]);
-            return new StringBuilder()
-                .Append(buffer)
-                .ToString();
+            var bytes = Encoding.UTF8.GetBytes(toRead);
+            var buffer = new byte[bytes.Length];
+            keyReader.ReadKey(buffer, 0, bytes.Length);
+            var sb = new StringBuilder();
+            return string.Join("", bytes
+                            .Select((t, i) => (t ^ buffer[i]).ToString("D3")));
         }
 
         public void WriteLine(string ps, string toWrite)
         {
-            var buffer = new char[toWrite.Length];
-            keyReader.Read(buffer, 0, toWrite.Length);
-            
-            for (int i = 0; i < toWrite.Length; ++i)
-                buffer[i] = (char) (toWrite[i] ^ buffer[i]);
-            UnderlayingWriter.WriteLine(ps, 
-                new StringBuilder()
-                .Append(buffer));
+            if (!toWrite.All(c => 0 <= c && c <= 9))
+            {
+                UnderlayingWriter.WriteLine("Sorry, I can't decode this.\n" + ps + toWrite);
+                return;
+            }
+            var bytes = new Byte[toWrite.Length / 3];
+            var buffer = new byte[bytes.Length];
+            keyReader.ReadKey(buffer, 0, buffer.Length);
+            for (int i = 0; i < bytes.Length; ++i)
+            {
+                bytes[i] = (byte) (int.Parse(toWrite.Substring(i * 3, 3)) ^ buffer[i]);
+            }
+            UnderlayingWriter.WriteLine(ps + Encoding.UTF8.GetString(bytes)); 
         }
     }
 }
+
