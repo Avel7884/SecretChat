@@ -43,13 +43,7 @@ namespace VKApi
 
         public VKDialog StartDialog(string[] ids)
         {
-            var dialogMembers = new StringBuilder(user);
-            foreach(var id in ids)
-            {
-                dialogMembers.Append(',');
-                dialogMembers.Append(id);
-            }
-            return new VKDialog(()=>Token, user, dialogMembers.ToString(), ver);
+            return new VKDialog(()=>Token, user, String.Join(",", ids), ver);
         }
 
         public Dictionary<string, string> GetFriends()

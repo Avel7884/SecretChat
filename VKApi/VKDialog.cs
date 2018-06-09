@@ -1,4 +1,4 @@
-﻿using Flurl.Http;
+﻿﻿using Flurl.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -35,11 +35,10 @@ namespace VKApi
             var res = String.Format(commandCheck, token(),ver).
                                     GetAsync().Result.Content.
                                     ReadAsStringAsync().Result;
-            var idToken = JObject.Parse(res)["response"]["items"]
-                            .Select(x => x["message"]) //need to check on valid members
-                            .Where(x => x["title"] != null &&
-                                        x["title"].ToString() == "6495077 Secret chat")
-                            .FirstOrDefault();
+            var idToken = JObject.Parse(res)["response"]["items"] //need to check on valid members
+                            .Select(x => x["message"])
+                            .FirstOrDefault(x => x["title"] != null &&
+                                        x["title"].ToString() == "6495077 Secret chat");
             if (idToken != null)
             {
                 chat = idToken["chat_id"].ToString();

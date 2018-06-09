@@ -8,6 +8,7 @@
         <e p="Extensions.cs" t="Include" />
         <e p="IConnecter.cs" t="Include" />
         <e p="IDialog.cs" t="Include" />
+        <e p="IFriendsManager.cs" t="Include" />
         <e p="IKeyReader.cs" t="Include" />
         <e p="IStringStream.cs" t="Include" />
         <e p="KeyReader.cs" t="Include" />
@@ -18,7 +19,7 @@
         </e>
         <e p="StealedWebServr.cs" t="Include" />
         <e p="VKApi.csproj" t="IncludeRecursive" />
-        <e p="VKConnecter.cs" t="Include" />
+        <e p="VKConnection.cs" t="Include" />
         <e p="VKDialog.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="key.crypt" t="Include" />

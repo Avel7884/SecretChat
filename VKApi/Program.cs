@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace VKApi
             var connection = new VKConnection("6495077");
             connection.Connect();
             var dialog = connection.StartDialog(new string[0]);//new[] { "134650397" }
-            while (execConsoleCommand(dialog)) ;
+            while (execConsoleCommand(dialog));
             dialog.Dispose();
         }
 
