@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 namespace VKApi
 {
-    public class Messenger
+    public class Messanger : IMessanger
     {
         private IConnecter<IDialog> connecter;
         private MessageStream messageStream;
         private IInteracter interacter;
         private IDialog dialog;
 
-        public Messenger(IConnecter<IDialog> connecter, MessageStream messageStream, IInteracter interacter)
+        public Messanger(IConnecter<IDialog> connecter, MessageStream messageStream, IInteracter interacter)
         {
             this.connecter = connecter;
             this.messageStream = messageStream;

@@ -1,4 +1,6 @@
 ﻿﻿using System;
+ using Ninject;
+ using Ninject.Extensions.Conventions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,10 +19,12 @@ namespace VKApi
     {
         static void Main(string[] args)
         {
-            var messanger = new Messenger(new VkConnecter("6495077", new ConsoleInterractor()), new OneTimePasCryptoStream(Console.In, Console.Out, new KeyReader()), new ConsoleInterractor());
+            var container = new StandardKernel();
+            BindContainer(container);
+            var messanger = container.Get<IMessanger>(); //new Messenger(new VkConnecter("6495077", new ConsoleInterractor()), new OneTimePasCryptoStream(Console.In, Console.Out, new KeyReader()), new ConsoleInterractor());
 //            var connection = 
-            messanger.LogIn();
-            messanger.CreateChat();
+//            messanger.LogIn();
+//            messanger.CreateChat();
             while (true)
             {
                 messanger.GetMessages();
@@ -30,6 +34,24 @@ namespace VKApi
 //            var dialog = connection.StartDialog(new string[0]);//new[] { "134650397" }
 //            while (execConsoleCommand(dialog));
 //            dialog.Dispose();
+        }
+
+        private static void BindContainer(StandardKernel container)
+        {
+            container.Bind<IInteracter>().To<ConsoleInterractor>().InSingletonScope();
+            container.Bind<MessageStream>().To<OneTimePasCryptoStream>();
+            container.Bind<IKeyReader>().To<KeyReader>();
+            container.Bind<TextReader>().ToConstant(Console.In);
+            container.Bind<TextWriter>().ToConstant(Console.Out);
+            container.Bind<IDialog>().To<VKDialog>();
+            container.Bind<IConnecter<IDialog>>().To<VkConnecter>();
+            container.Bind<string>().ToConstant("6495077");
+            container.Bind<IMessanger>().To<Messanger>()
+                .OnActivation(m =>
+            {
+                m.LogIn();
+                m.CreateChat();
+            });
         }
 
 //        private static bool execConsoleCommand(IDialog dial)
