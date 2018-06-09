@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace VKApi
@@ -37,13 +38,11 @@ namespace VKApi
 
         public void GetMessages()
         {
-            List<string> messages;
-            if (dialog.getMessages(out messages))
+            if (!dialog.getMessages(out var messages)) return;
+            foreach (var message in messages)
             {
-                foreach (var message in messages)
-                {
-                    messageStream.WriteLine("", message);
-                }
+                Console.WriteLine(message);
+                messageStream.WriteLine("", message);
             }
         }
     }

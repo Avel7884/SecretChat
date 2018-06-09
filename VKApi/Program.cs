@@ -23,8 +23,8 @@ namespace VKApi
             messanger.CreateChat();
             while (true)
             {
-                messanger.SendMessage();
                 messanger.GetMessages();
+                messanger.SendMessage();
             }
 //            connection.Connect();
 //            var dialog = connection.StartDialog(new string[0]);//new[] { "134650397" }

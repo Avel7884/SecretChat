@@ -39,13 +39,11 @@ namespace VKApi
                             .Select(x => x["message"])
                             .FirstOrDefault(x => x["title"] != null &&
                                         x["title"].ToString() == "6495077 Secret chat");
-            if (idToken != null)
-            {
-                chat = idToken["chat_id"].ToString();
-                return true;
-            }
-            else
+            
+            if (idToken == null) 
                 return false;
+            chat = idToken["chat_id"].ToString();
+            return true;
         }
 
         private string commandCreateChat = "https://api.vk.com/method/messages.createChat?user_ids={0}&title=chat&v={1}&access_token={2}";
@@ -63,10 +61,12 @@ namespace VKApi
         {
             var res = string.Format(commandGet, token(), ver).GetAsync().Result.Content.ReadAsStringAsync().Result;
             messages = JObject.Parse(res)["response"]["items"]
-                            .Where(x => x["chat_id"].ToString() == chat)
+                            .Where(x => x.SelectToken("chat_id") != null)
+                            .Where(x => x.SelectToken("chat_id").ToString() == "77")
                             .Select(x => x["body"].ToString())
+                            .Reverse()
                             .ToList();
-            return true;
+            return messages.Count != 0;
         }
 
         private const string commandSend = "https://api.vk.com/method/messages.send?chat_id={0}&message={1}&access_token={2}&v={3}";
