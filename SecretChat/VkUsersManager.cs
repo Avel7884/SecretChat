@@ -7,10 +7,12 @@ namespace SecretChat
 {
     public class VKUsersManager : IUsersManager
     {
-        private readonly Dictionary<string, string> userById;
+        private static Dictionary<string, string> userById;
+        public IVkApiRequests apiRequests;
 
-        public VKUsersManager()
+        public VKUsersManager(IVkApiRequests apiRequests)
         {
+            this.apiRequests = apiRequests;
             userById = new Dictionary<string, string>();
         }
         
@@ -20,8 +22,15 @@ namespace SecretChat
         {
             if (!userById.ContainsKey(id))
             {
-                var content = VKAPIRequests.SendRequest(commandGetUser, new Dictionary<string, string> {{"user_id", id}});
-                var name = content.SelectToken("first_name") + content.SelectToken("last_name").ToString();
+                var result = apiRequests.SendRequest(commandGetUser, new Dictionary<string, string>
+                {
+                    {"user_id", id}
+                });
+                // Console.WriteLine(result);
+                var content = JToken.Parse(result)[0];
+                var name = string.Join(" ", 
+                    content.SelectToken("first_name").ToString(), 
+                    content.SelectToken("last_name").ToString());
                 userById.Add(id, name);
             }
 

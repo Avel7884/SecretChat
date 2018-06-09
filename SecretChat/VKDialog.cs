@@ -6,15 +6,19 @@ using Newtonsoft.Json.Linq;
 
 namespace SecretChat
 {
-    class VKDialog : IDialog
+    class VkDialog: IDialog
     {
         private int lastMessageId;
         private string user;
         private string chat;
         private const int chatBias = (int)2e9;
+        private IVkApiRequests apiRequests;
+        public IUsersManager UsersManager;
 
-        public VKDialog(string user, string members)
+        public VkDialog(string user, string members, IUsersManager usersManager, IVkApiRequests apiRequests)
         {
+            UsersManager = usersManager;
+            this.apiRequests = apiRequests;
             this.user = user;
             lastMessageId = 0;
             if (!TryToConnectToExistedDialog())
@@ -24,7 +28,8 @@ namespace SecretChat
         private const string commandGetDialogs = "messages.getDialogs";
         private bool TryToConnectToExistedDialog()
         {
-            var content = VKAPIRequests.SendRequest(commandGetDialogs, new Dictionary<string, string>());
+            var result = apiRequests.SendRequest(commandGetDialogs, new Dictionary<string, string>());
+            var content = JObject.Parse(result);
             var idToken = content.SelectToken("items") //need to check on valid members
                             ?.Select(x => x["message"])
                              .FirstOrDefault(x => x.SelectToken("title")
@@ -41,7 +46,7 @@ namespace SecretChat
 
         private void CreateDialog(string members)
         {
-            chat = (string)VKAPIRequests.SendRequest(
+            chat = apiRequests.SendRequest(
                 commandCreateChat,
                 new Dictionary<string, string>
                 {
@@ -51,19 +56,23 @@ namespace SecretChat
         }
 
         private const string commandGetMessage = "messages.get";
-        public bool getMessages(out List<string> messages)
+        public bool getMessages(out List<Message> messages)
         {
-            var content = VKAPIRequests.SendRequest(commandGetMessage,
+            var result = apiRequests.SendRequest(commandGetMessage,
                 new Dictionary<string, string>
                 {
                     {"last_message_id", lastMessageId.ToString()}
                 });
+            var content = JObject.Parse(result);
             messages = content["items"]
                             .Where(x => x.SelectToken("chat_id")?.ToString() == chat)
                             .Select(x =>
                             {
                                 lastMessageId = Math.Max(lastMessageId, int.Parse(x.SelectToken("id").ToString()));
-                                return x.SelectToken("body").ToString();
+                                return new Message(
+                                    x.SelectToken("body").ToString(), 
+                                    UsersManager.GetNameById(x.SelectToken("user_id").ToString())
+                                    );
                             })
                             .Reverse()
                             .ToList();
@@ -74,10 +83,9 @@ namespace SecretChat
 
         public bool sendMessage(string message)
         {
-            JToken content;
             try
             {
-                content = VKAPIRequests.SendRequest(commandSendMessage, new Dictionary<string, string>
+                apiRequests.SendRequest(commandSendMessage, new Dictionary<string, string>
                 {
                     {"chat_id", chat},
                     {"message", message}
@@ -95,13 +103,13 @@ namespace SecretChat
         private const string commandDelete = "messages.deleteDialog?user_id={0}&peer_id={1}&access_token={2}&v={3}";
         public void Dispose()
         {
-            VKAPIRequests.SendRequest(commandExit, new Dictionary<string, string>
+            apiRequests.SendRequest(commandExit, new Dictionary<string, string>
             {
                 {"chat_id", chat},
                 {"user_id", user}
             });
             var peer = (chatBias + int.Parse(chat)).ToString();
-            VKAPIRequests.SendRequest(commandDelete, new Dictionary<string, string>
+            apiRequests.SendRequest(commandDelete, new Dictionary<string, string>
             {
                 {"user_id", user},
                 {"peer_id", peer}

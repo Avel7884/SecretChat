@@ -24,13 +24,15 @@ namespace SecretChat
 
         private static void BindContainer(IBindingRoot container)
         {
+            container.Bind<IUsersManager>().To<VKUsersManager>();
+            container.Bind<IVkApiRequests>().To<VkApiRequests>().InSingletonScope();
             container.Bind<IInteracter>().To<ConsoleInterractor>().InSingletonScope();
             container.Bind<IMessageStream>().To<OneTimePasCryptoStream>();
             container.Bind<IKeyReader>().To<FileKeyReader>();
             container.Bind<TextReader>().ToConstant(Console.In);
             container.Bind<TextWriter>().ToConstant(Console.Out);
-            container.Bind<IDialog>().To<VKDialog>();
-            container.Bind<IConnecter<IDialog>>().To<VKConnecter>();
+            container.Bind<IDialog>().To<VkDialog>();
+            container.Bind<IConnecter<IDialog>>().To<VkConnecter>();
             container.Bind<string>().ToConstant("6495077");
             container.Bind<IMessanger>().To<Messanger>()
                 .OnActivation(m =>

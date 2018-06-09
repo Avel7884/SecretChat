@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Principal;
 using System.Web.Helpers;
@@ -8,23 +9,40 @@ using Newtonsoft.Json.Linq;
 
 namespace SecretChat
 {
-    public static class VKAPIRequests
+    public class VkApiRequests : IVkApiRequests
     {
         private const string apiPattern = "https://api.vk.com/method/{0}?{1}&access_token={2}&v={3}";
-        internal static Func<string> Token;
-        internal static string Ver;
+        public Func<string> Token;
+        public string Ver = "";
 
-        public static JToken SendRequest(string method, Dictionary<string, string> parametrs)
+        public string SendRequest(string method, Dictionary<string, string> parametrs)
         {
+            if (Token == null)
+                throw new NullReferenceException();
             var request = string.Format(apiPattern, method, string.Join("&", parametrs.Select(p => p.Key + "=" + p.Value)), Token(), Ver);
+            // Console.WriteLine(request);
             var result = request.GetAsync().Result.Content
                 .ReadAsStringAsync().Result;
-            Console.WriteLine(request);
-            Console.WriteLine(result);
+            // Console.WriteLine(result);
             var jtok = JObject.Parse(result);
             if (jtok.SelectToken("error") != null)
                 throw new ArgumentException();
-            return jtok.SelectToken("response");
+            return jtok.SelectToken("response").ToString();
+        }
+
+        public void SetToken(Func<string> token)
+        {
+            if (Token != null)
+                throw new AccessViolationException();
+            Token = token;
+        }
+
+        public void SetVersion(string ver)
+        {
+            if (!Ver.Equals(""))
+                throw new AccessViolationException();
+            Ver = ver;
         }
     }
+
 }

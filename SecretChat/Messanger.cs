@@ -41,7 +41,7 @@ namespace SecretChat
             if (!dialog.getMessages(out var messages)) return;
             foreach (var message in messages)
             {
-                messageStream.WriteLine("", message);
+                messageStream.WriteLine($"({message.Sender}) > ", message.Content);
             }
         }
     }
