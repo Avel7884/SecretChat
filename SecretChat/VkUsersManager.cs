@@ -8,26 +8,19 @@ namespace SecretChat
     public class VKUsersManager : IUsersManager
     {
         private readonly Dictionary<string, string> userById;
-        private Func<string> token;
-        private string ver;
 
-        public VKUsersManager(Func<string> token, string ver)
+        public VKUsersManager()
         {
-            this.token = token;
-            this.ver = ver;
             userById = new Dictionary<string, string>();
         }
         
-        private const string commandGetUser = "https://api.vk.com/method/users.get?user_id={0}&access_token={1}&v={2}";
+        private const string commandGetUser = "users.get";
         
         public string GetNameById(string id)
         {
             if (!userById.ContainsKey(id))
             {
-                var res = string.Format(commandGetUser, id, token, ver)
-                    .GetAsync().Result.Content.
-                    ReadAsStringAsync().Result;;
-                var content = JObject.Parse(res)["response"];
+                var content = VKAPIRequests.SendRequest(commandGetUser, new Dictionary<string, string> {{"user_id", id}});
                 var name = content.SelectToken("first_name") + content.SelectToken("last_name").ToString();
                 userById.Add(id, name);
             }

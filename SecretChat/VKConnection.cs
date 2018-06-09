@@ -43,12 +43,12 @@ namespace SecretChat
         private void Init()
         {
             InitToken();
-            usersManager = new VKUsersManager(() => Token, ver);
+            usersManager = new VKUsersManager();
         }
 
         public VKDialog StartDialog(IEnumerable ids)
         {
-            return new VKDialog(() => Token, user, string.Join(",", ids), ver);
+            return new VKDialog(user, string.Join(",", ids));
         }
 
         public Dictionary<string, string> GetFriends()
@@ -63,6 +63,8 @@ namespace SecretChat
             interactor.WriteLine("Write link:");
             ReadLink();
             timer.Start();
+            VKAPIRequests.Token = () => Token;
+            VKAPIRequests.Ver = ver;
         }
 
         private void ReadLink()

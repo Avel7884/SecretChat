@@ -33,7 +33,7 @@ namespace SecretChat
             if (!messageStream.CanReadLine()) 
                 return;
             var message = messageStream.ReadLine();
-            while (!dialog.sendMessage(message)) ;
+            dialog.sendMessage(message);
         }
 
         public void GetMessages()

@@ -8,32 +8,26 @@ namespace SecretChat
 {
     class VKDialog : IDialog
     {
-        private Func<string> token;
-        private string ver;
         private int lastMessageId;
         private string user;
         private string chat;
         private const int chatBias = (int)2e9;
 
-        public VKDialog(Func<string> token, string user, string members, string ver)
+        public VKDialog(string user, string members)
         {
-            this.token = token;
-            this.ver = ver;
             this.user = user;
             lastMessageId = 0;
             if (!TryToConnectToExistedDialog())
                 CreateDialog(members);
         }
 
-        private const string commandCheck = "https://api.vk.com/method/messages.getDialogs?access_token={0}&v={1}";
+        private const string commandGetDialogs = "messages.getDialogs";
         private bool TryToConnectToExistedDialog()
         {
-            var res = String.Format(commandCheck, token(),ver).
-                                    GetAsync().Result.Content.
-                                    ReadAsStringAsync().Result;
-            var idToken = JObject.Parse(res)["response"]["items"] //need to check on valid members
-                            .Select(x => x["message"])
-                            .FirstOrDefault(x => x.SelectToken("title")
+            var content = VKAPIRequests.SendRequest(commandGetDialogs, new Dictionary<string, string>());
+            var idToken = content.SelectToken("items") //need to check on valid members
+                            ?.Select(x => x["message"])
+                             .FirstOrDefault(x => x.SelectToken("title")
                                                     .ToString()
                                                     .StartsWith("6495077"));
             
@@ -43,19 +37,28 @@ namespace SecretChat
             return true;
         }
 
-        private const string commandCreateChat = "https://api.vk.com/method/messages.createChat?user_ids={0}&title=chat&v={1}&access_token={2}";
+        private const string commandCreateChat = "messages.createChat";
 
         private void CreateDialog(string members)
         {
-            var res = string.Format(commandCreateChat, members, ver, token()).GetAsync().Result.Content.ReadAsStringAsync().Result;
-            chat = (string)JObject.Parse(res).GetValue("response"); //JsonConvert.DeserializeObject<Dictionary<string, string>>(res)[];
+            chat = (string)VKAPIRequests.SendRequest(
+                commandCreateChat,
+                new Dictionary<string, string>
+                {
+                    {"user_ids", members}, 
+                    {"title", "6495077 secret chat"}
+                });
         }
 
-        private const string commandGet = "https://api.vk.com/method/messages.get?access_token={0}&v={1}&last_message_id={2}";
+        private const string commandGetMessage = "messages.get";
         public bool getMessages(out List<string> messages)
         {
-            var res = string.Format(commandGet, token(), ver, lastMessageId).GetAsync().Result.Content.ReadAsStringAsync().Result;
-            messages = JObject.Parse(res)["response"]["items"]
+            var content = VKAPIRequests.SendRequest(commandGetMessage,
+                new Dictionary<string, string>
+                {
+                    {"last_message_id", lastMessageId.ToString()}
+                });
+            messages = content["items"]
                             .Where(x => x.SelectToken("chat_id")?.ToString() == chat)
                             .Select(x =>
                             {
@@ -67,20 +70,42 @@ namespace SecretChat
             return messages.Count != 0;
         }
 
-        private const string commandSend = "https://api.vk.com/method/messages.send?chat_id={0}&message={1}&access_token={2}&v={3}";
+        private const string commandSendMessage = "messages.send";
 
         public bool sendMessage(string message)
         {
-            return string.Format(commandSend, chat, message, token(), ver).GetAsync().Result.IsSuccessStatusCode;
+            JToken content;
+            try
+            {
+                content = VKAPIRequests.SendRequest(commandSendMessage, new Dictionary<string, string>
+                {
+                    {"chat_id", chat},
+                    {"message", message}
+                });
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        private const string commandExit = "https://api.vk.com/method/messages.removeChatUser?chat_id={0}&user_id={1}&access_token={2}&v={3}";
-        private const string commandDelete = "https://api.vk.com/method/messages.deleteDialog?user_id={0}&peer_id={1}&access_token={2}&v={3}";
+        private const string commandExit = "messages.removeChatUser";
+        private const string commandDelete = "messages.deleteDialog?user_id={0}&peer_id={1}&access_token={2}&v={3}";
         public void Dispose()
         {
-            string.Format(commandExit, chat, user, token, ver).GetAsync();
+            VKAPIRequests.SendRequest(commandExit, new Dictionary<string, string>
+            {
+                {"chat_id", chat},
+                {"user_id", user}
+            });
             var peer = (chatBias + int.Parse(chat)).ToString();
-            string.Format(commandDelete, user, peer, token, ver).GetAsync();
+            VKAPIRequests.SendRequest(commandDelete, new Dictionary<string, string>
+            {
+                {"user_id", user},
+                {"peer_id", peer}
+            });
         }
     }
 }

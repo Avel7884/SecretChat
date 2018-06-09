@@ -23,6 +23,7 @@
         </e>
         <e p="SecretChat.csproj" t="IncludeRecursive" />
         <e p="StealedWebServr.cs" t="Include" />
+        <e p="VKAPIRequests.cs" t="Include" />
         <e p="VKConnection.cs" t="Include" />
         <e p="VKDialog.cs" t="Include" />
         <e p="VkUsersManager.cs" t="Include" />
