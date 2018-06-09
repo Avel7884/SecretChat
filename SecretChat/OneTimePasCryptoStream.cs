@@ -3,7 +3,7 @@ using System.Text;
 
 namespace SecretChat
 {
-    public class OneTimePasCryptoStream : MessageStream
+    public class OneTimePasCryptoStream : IMessageStream
     {
         private TextReader UnderlayingReader { get; }
         private TextWriter UnderlayingWriter { get; }
@@ -16,26 +16,25 @@ namespace SecretChat
             this.keyReader = keyReader;
         }
 
-        public override bool TryReadLine(out string result)
+        public bool CanReadLine()
+        {
+            return UnderlayingReader.Peek() != -1;
+        }
+
+        public string ReadLine()
         {
             var toRead = UnderlayingReader.ReadLine();
-            if (toRead == null)
-            {
-                result = null;
-                return false;
-            }
             var buffer = new char[toRead.Length];
             keyReader.Read(buffer, 0, toRead.Length);
             
             for (int i = 0; i < toRead.Length; ++i)
                 buffer[i] = (char) (toRead[i] ^ buffer[i]);
-            result = new StringBuilder()
+            return new StringBuilder()
                 .Append(buffer)
                 .ToString();
-            return result.Length != 0;
         }
 
-        public override void WriteLine(string ps, string toWrite)
+        public void WriteLine(string ps, string toWrite)
         {
             var buffer = new char[toWrite.Length];
             keyReader.Read(buffer, 0, toWrite.Length);

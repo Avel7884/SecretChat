@@ -5,11 +5,11 @@ namespace SecretChat
     public class Messanger : IMessanger
     {
         private IConnecter<IDialog> connecter;
-        private MessageStream messageStream;
+        private IMessageStream messageStream;
         private IInteracter interacter;
         private IDialog dialog;
 
-        public Messanger(IConnecter<IDialog> connecter, MessageStream messageStream, IInteracter interacter)
+        public Messanger(IConnecter<IDialog> connecter, IMessageStream messageStream, IInteracter interacter)
         {
             this.connecter = connecter;
             this.messageStream = messageStream;
@@ -30,8 +30,8 @@ namespace SecretChat
 
         public void SendMessage()
         {
-            if (messageStream.TryReadLine(out var message))
-                dialog.sendMessage(message);
+            if (messageStream.CanReadLine())
+                dialog.sendMessage(messageStream.ReadLine());
         }
 
         public void GetMessages()

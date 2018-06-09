@@ -30,7 +30,7 @@ namespace SecretChat
         private static void BindContainer(IBindingRoot container)
         {
             container.Bind<IInteracter>().To<ConsoleInterractor>().InSingletonScope();
-            container.Bind<MessageStream>().To<OneTimePasCryptoStream>();
+            container.Bind<IMessageStream>().To<OneTimePasCryptoStream>();
             container.Bind<IKeyReader>().To<KeyReader>();
             container.Bind<TextReader>().ToConstant(Console.In);
             container.Bind<TextWriter>().ToConstant(Console.Out);

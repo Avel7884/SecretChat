@@ -12,9 +12,9 @@
         <e p="IFriendsManager.cs" t="Include" />
         <e p="IInteracter.cs" t="Include" />
         <e p="IKeyReader.cs" t="Include" />
+        <e p="IMessageStream.cs" t="Include" />
         <e p="IMessanger.cs" t="Include" />
         <e p="KeyReader.cs" t="Include" />
-        <e p="MessageStream.cs" t="Include" />
         <e p="Messanger.cs" t="Include" />
         <e p="OneTimePasCryptoStream.cs" t="Include" />
         <e p="Program.cs" t="Include" />
