@@ -61,8 +61,7 @@ namespace VKApi
         {
             var res = string.Format(commandGet, token(), ver).GetAsync().Result.Content.ReadAsStringAsync().Result;
             messages = JObject.Parse(res)["response"]["items"]
-                            .Where(x => x.SelectToken("chat_id") != null)
-                            .Where(x => x.SelectToken("chat_id").ToString() == "77")
+                            .Where(x => x.SelectToken("chat_id")?.ToString() == "77")
                             .Select(x => x["body"].ToString())
                             .Reverse()
                             .ToList();
