@@ -24,7 +24,7 @@ namespace SecretChat
 
         private static void BindContainer(IBindingRoot container)
         {
-            container.Bind<IUsersManager>().To<VKUsersManager>();
+            container.Bind<IVkUsersManager>().To<VKUsersManager>();
             container.Bind<IVkApiRequests>().To<VkApiRequests>().InSingletonScope();
             container.Bind<IInteracter>().To<ConsoleInterractor>().InSingletonScope();
             container.Bind<IMessageStream>().To<OneTimePasCryptoStream>();

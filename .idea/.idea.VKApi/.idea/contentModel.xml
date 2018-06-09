@@ -18,6 +18,7 @@
         <e p="IMessanger.cs" t="Include" />
         <e p="IUsersManager.cs" t="Include" />
         <e p="IVkApiRequests.cs" t="Include" />
+        <e p="IVkUsersManager.cs" t="Include" />
         <e p="Message.cs" t="Include" />
         <e p="Messanger.cs" t="Include" />
         <e p="OneTimePasCryptoStream.cs" t="Include" />

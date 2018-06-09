@@ -13,9 +13,9 @@ namespace SecretChat
         private string chat;
         private const int chatBias = (int)2e9;
         private IVkApiRequests apiRequests;
-        public IUsersManager UsersManager;
+        public IVkUsersManager UsersManager;
 
-        public VkDialog(string user, string members, IUsersManager usersManager, IVkApiRequests apiRequests)
+        public VkDialog(string user, string members, IVkUsersManager usersManager, IVkApiRequests apiRequests)
         {
             UsersManager = usersManager;
             this.apiRequests = apiRequests;

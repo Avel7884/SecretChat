@@ -18,11 +18,14 @@ namespace SecretChat
         private string applicationClientId;
         private string ver;
         private string user;
-        private IUsersManager usersManager;
+        private IVkUsersManager usersManager;
         private IVkApiRequests apiRequests;
 
-        public VkConnecter(string applicationClientId, IInteracter interacter, IUsersManager usersManager, 
-            IVkApiRequests apiRequests, string ver = "5.78")
+        public VkConnecter(string applicationClientId, 
+            IInteracter interacter, 
+            IVkUsersManager usersManager, 
+            IVkApiRequests apiRequests, 
+            string ver = "5.78")
         {
             this.usersManager = usersManager;
             this.apiRequests = apiRequests;

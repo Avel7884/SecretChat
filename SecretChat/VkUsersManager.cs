@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace SecretChat
 {
-    public class VKUsersManager : IUsersManager
+    public class VKUsersManager : IVkUsersManager
     {
         private static Dictionary<string, string> userById;
         public IVkApiRequests apiRequests;
@@ -37,7 +37,7 @@ namespace SecretChat
             return userById[id];
         }
 
-        public List<string> GetIdsByUser(string name)
+        public List<string> GetIdsByName(string name)
         {
             throw new NotImplementedException();
         }
