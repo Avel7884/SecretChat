@@ -19,7 +19,7 @@ namespace VKApi
         {
             var connection = new VKConnection("6495077");
             connection.Connect();
-            var dialog = connection.StartDialog(new[] { "134650397" });
+            var dialog = connection.StartDialog(new string[0]);//new[] { "134650397" }
             while (execConsoleCommand(dialog)) ;
             dialog.Dispose();
         }
