@@ -37,8 +37,9 @@ namespace VKApi
                                     ReadAsStringAsync().Result;
             var idToken = JObject.Parse(res)["response"]["items"] //need to check on valid members
                             .Select(x => x["message"])
-                            .FirstOrDefault(x => x["title"] != null &&
-                                        x["title"].ToString() == "6495077 Secret chat");
+                            .FirstOrDefault(x => x.SelectToken("title")
+                                                    .ToString()
+                                                    .StartsWith("6495077"));
             
             if (idToken == null) 
                 return false;
@@ -61,7 +62,7 @@ namespace VKApi
         {
             var res = string.Format(commandGet, token(), ver).GetAsync().Result.Content.ReadAsStringAsync().Result;
             messages = JObject.Parse(res)["response"]["items"]
-                            .Where(x => x.SelectToken("chat_id")?.ToString() == "77")
+                            .Where(x => x.SelectToken("chat_id")?.ToString() == chat)
                             .Select(x => x["body"].ToString())
                             .Reverse()
                             .ToList();
