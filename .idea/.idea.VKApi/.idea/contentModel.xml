@@ -3,7 +3,7 @@
   <component name="ContentModelStore">
     <e p="$USER_HOME$/.Rider2017.3/system/resharper-host/local/Transient/ReSharperHost/v11/SolutionCaches/_VKApi.-1248327469.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
-      <e p="VKApi" t="IncludeRecursive">
+      <e p="SecretChat" t="IncludeRecursive">
         <e p="App.config" t="Include" />
         <e p="ConsoleInterractor.cs" t="Include" />
         <e p="Extensions.cs" t="Include" />
@@ -21,8 +21,8 @@
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
+        <e p="SecretChat.csproj" t="IncludeRecursive" />
         <e p="StealedWebServr.cs" t="Include" />
-        <e p="VKApi.csproj" t="IncludeRecursive" />
         <e p="VKConnection.cs" t="Include" />
         <e p="VKDialog.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />

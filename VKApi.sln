@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VKApi", "VKApi\VKApi.csproj", "{68905953-F60F-484C-A198-99742243199B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecretChat", "SecretChat\SecretChat.csproj", "{68905953-F60F-484C-A198-99742243199B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
