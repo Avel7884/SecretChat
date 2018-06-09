@@ -17,37 +17,45 @@ namespace VKApi
     {
         static void Main(string[] args)
         {
-            var connection = new VKConnection("6495077");
-            connection.Connect();
-            var dialog = connection.StartDialog(new string[0]);//new[] { "134650397" }
-            while (execConsoleCommand(dialog));
-            dialog.Dispose();
+            var messanger = new Messenger(new VkConnecter("6495077", new ConsoleInterractor()), new OneTimePasCryptoStream(Console.In, Console.Out, new KeyReader()), new ConsoleInterractor());
+//            var connection = 
+            messanger.LogIn();
+            messanger.CreateChat();
+            while (true)
+            {
+                messanger.SendMessage();
+                messanger.GetMessages();
+            }
+//            connection.Connect();
+//            var dialog = connection.StartDialog(new string[0]);//new[] { "134650397" }
+//            while (execConsoleCommand(dialog));
+//            dialog.Dispose();
         }
 
-        private static bool execConsoleCommand(IDialog dial)
-        {
-            var res = Console.ReadLine().Split();
-            if (res.Length < 0)
-                return false;
-            switch (res[0])
-            {
-                case "w":
-                    return dial.sendMessage(res[1]);
-                case "r":
-                    return printMSGS();
-                case "q":
-                    return false;
-                default:
-                    throw new Exception();
-            }
-            bool printMSGS()
-            {
-                var tmp = dial.getMessages(out string[] asd);
-                foreach (var msg in asd)
-                    Console.WriteLine(msg);
-                return tmp;
-            }
-        }
+//        private static bool execConsoleCommand(IDialog dial)
+//        {
+//            var res = Console.ReadLine().Split();
+//            if (res.Length < 0)
+//                return false;
+//            switch (res[0])
+//            {
+//                case "w":
+//                    return dial.sendMessage(res[1]);
+//                case "r":
+//                    return printMSGS();
+//                case "q":
+//                    return false;
+//                default:
+//                    throw new Exception();
+//            }
+////            bool printMSGS()
+////            {
+////                var tmp = dial.getMessages(out string[] asd);
+////                foreach (var msg in asd)
+////                    Console.WriteLine(msg);
+////                return tmp;
+////            }
+//        }
 
         //static void InitToken()
         //{

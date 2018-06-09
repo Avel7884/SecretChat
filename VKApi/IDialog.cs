@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace VKApi
 {
-    interface IDialog: IDisposable
+    public interface IDialog: IDisposable
     {
         bool hasCallback { get; }
-        bool getMessages(out string[] messages);
+        bool getMessages(out List<string> messages);
         bool sendMessage(string messages);
         event EventHandler Callback;
     }

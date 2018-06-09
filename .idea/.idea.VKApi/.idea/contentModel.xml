@@ -5,13 +5,16 @@
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="VKApi" t="IncludeRecursive">
         <e p="App.config" t="Include" />
+        <e p="ConsoleInterractor.cs" t="Include" />
         <e p="Extensions.cs" t="Include" />
         <e p="IConnecter.cs" t="Include" />
         <e p="IDialog.cs" t="Include" />
         <e p="IFriendsManager.cs" t="Include" />
+        <e p="IInteracter.cs" t="Include" />
         <e p="IKeyReader.cs" t="Include" />
-        <e p="IStringStream.cs" t="Include" />
         <e p="KeyReader.cs" t="Include" />
+        <e p="MessageStream.cs" t="Include" />
+        <e p="Messenger.cs" t="Include" />
         <e p="OneTimePasCryptoStream.cs" t="Include" />
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">

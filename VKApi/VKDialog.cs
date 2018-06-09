@@ -29,7 +29,7 @@ namespace VKApi
                 CreateDialog(members);
         }
 
-        private string commandCheck = "https://api.vk.com/method/messages.getDialogs?access_token={0}&v={1}";
+        private const string commandCheck = "https://api.vk.com/method/messages.getDialogs?access_token={0}&v={1}";
         private bool TryToConnectToExistedDialog()
         {
             var res = String.Format(commandCheck, token(),ver).
@@ -58,30 +58,31 @@ namespace VKApi
         public bool hasCallback => false;
         public event EventHandler Callback;
 
-        private string commandGet = "https://api.vk.com/method/messages.get?access_token={0}&v={1}";
-        public bool getMessages(out string[] messages)
+        private const string commandGet = "https://api.vk.com/method/messages.get?access_token={0}&v={1}";
+        public bool getMessages(out List<string> messages)
         {
-            var res = String.Format(commandGet, token(), ver).GetAsync().Result.Content.ReadAsStringAsync().Result;
+            var res = string.Format(commandGet, token(), ver).GetAsync().Result.Content.ReadAsStringAsync().Result;
             messages = JObject.Parse(res)["response"]["items"]
                             .Where(x => x["chat_id"].ToString() == chat)
                             .Select(x => x["body"].ToString())
-                            .ToArray();
+                            .ToList();
             return true;
         }
 
-        private string commandSend = "https://api.vk.com/method/messages.send?chat_id={0}&message={1}&access_token={2}&v={3}";
+        private const string commandSend = "https://api.vk.com/method/messages.send?chat_id={0}&message={1}&access_token={2}&v={3}";
+
         public bool sendMessage(string message)
         {
-            return String.Format(commandSend, chat, message, token(), ver).GetAsync().Result.IsSuccessStatusCode;
+            return string.Format(commandSend, chat, message, token(), ver).GetAsync().Result.IsSuccessStatusCode;
         }
 
-        private string commandExit = "https://api.vk.com/method/messages.removeChatUser?chat_id={0}&user_id={1}&access_token={2}&v={3}";
-        private string commandDelete = "https://api.vk.com/method/messages.deleteDialog?user_id={0}&peer_id={1}&access_token={2}&v={3}";
+        private const string commandExit = "https://api.vk.com/method/messages.removeChatUser?chat_id={0}&user_id={1}&access_token={2}&v={3}";
+        private const string commandDelete = "https://api.vk.com/method/messages.deleteDialog?user_id={0}&peer_id={1}&access_token={2}&v={3}";
         public void Dispose()
         {
-            String.Format(commandExit, chat, user, token, ver).GetAsync();
+            string.Format(commandExit, chat, user, token, ver).GetAsync();
             var peer = (chatBias + int.Parse(chat)).ToString();
-            String.Format(commandDelete, user, peer, token, ver).GetAsync();
+            string.Format(commandDelete, user, peer, token, ver).GetAsync();
         }
     }
 }

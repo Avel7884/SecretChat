@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace VKApi
 {
-    interface IConnection<T> where T : IDialog
+    public interface IConnecter<out T> where T : IDialog
     {
         void Connect();
-        T StartDialog(string[] ids);
+        T StartDialog(IEnumerable ids);
         Dictionary<string,string> GetFriends();
     }
 }

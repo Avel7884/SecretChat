@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,20 +11,22 @@ using Newtonsoft.Json;
 
 namespace VKApi
 {
-    class VKConnection : IConnection<VKDialog>
+    class VkConnecter : IConnecter<VKDialog>
     {
         private Timer timer;
         private const string autrizeRequest = "https://oauth.vk.com/authorize?client_id={0}&display=popup&scope=4098&response_type=token&v={1}";
 
-        private Regex rx = new Regex(@"https://oauth.vk.com/blank.html#access_token=([0-9a-f]+)&expires_in=(\d+)&user_id=(\d+)",
+        private static readonly Regex rx = new Regex(@"https://oauth.vk.com/blank.html#access_token=([0-9a-f]+)&expires_in=(\d+)&user_id=(\d+)",
             RegexOptions.Compiled);
 
+        private readonly IInteracter interactor;
         private string id;
         private string ver;
         private string user;
 
-        public VKConnection(string clientID, string ver = "5.78")
+        public VkConnecter(string clientID, IInteracter interactor, string ver = "5.78")
         {
+            this.interactor = interactor;
             id = clientID;
             this.ver = ver;
             InitTimer();
@@ -36,14 +39,14 @@ namespace VKApi
                 InitToken();
         }
 
-        public string Token { get ; private set ; }
+        private string Token { get ; set ; }
 
         public void Connect()=>
             InitToken();
 
-        public VKDialog StartDialog(string[] ids)
+        public VKDialog StartDialog(IEnumerable ids)
         {
-            return new VKDialog(()=>Token, user, String.Join(",", ids), ver);
+            return new VKDialog(() => Token, user, string.Join(",", ids), ver);
         }
 
         public Dictionary<string, string> GetFriends()
@@ -55,18 +58,18 @@ namespace VKApi
         {
             timer.Stop();
             System.Diagnostics.Process.Start(String.Format(autrizeRequest, id, ver));
-            Console.WriteLine("Write link:");
+            interactor.WriteLine("Write link:");
             ReadLink();
             timer.Start();
         }
 
         private void ReadLink()
         {
-            var link = Console.ReadLine();
+            var link = interactor.ReadLine();
             var groups = rx.Match(link).Groups;
             Token = groups[1].Value;
             user = groups[3].Value;
-            timer.Interval = 1000 * int.Parse(groups[2].Value);
+            timer.Interval = int.Parse(groups[2].Value) * 1000;
         }
     }
 }
