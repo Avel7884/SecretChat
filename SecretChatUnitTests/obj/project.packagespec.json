@@ -1,0 +1,63 @@
+﻿{
+  "version": "1.0.0",
+  "restore": {
+    "projectUniqueName": "/home/khanova/RiderProjects/SecretChat/SecretChatUnitTests/SecretChatUnitTests.csproj",
+    "projectName": "SecretChatUnitTests",
+    "projectPath": "/home/khanova/RiderProjects/SecretChat/SecretChatUnitTests/SecretChatUnitTests.csproj",
+    "outputPath": "/home/khanova/RiderProjects/SecretChat/SecretChatUnitTests/obj/",
+    "projectStyle": "PackageReference",
+    "fallbackFolders": [
+      "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+    ],
+    "originalTargetFrameworks": [
+      "netcoreapp2.1"
+    ],
+    "frameworks": {
+      "netcoreapp2.1": {
+        "projectReferences": {
+          "/home/khanova/RiderProjects/SecretChat/SecretChat/SecretChat.csproj": {
+            "projectPath": "/home/khanova/RiderProjects/SecretChat/SecretChat/SecretChat.csproj"
+          }
+        }
+      }
+    },
+    "warningProperties": {
+      "warnAsError": [
+        "NU1605"
+      ]
+    }
+  },
+  "frameworks": {
+    "netcoreapp2.1": {
+      "dependencies": {
+        "FakeItEasy": {
+          "target": "Package",
+          "version": "[4.6.0, )"
+        },
+        "Microsoft.NET.Test.Sdk": {
+          "target": "Package",
+          "version": "[15.8.0-preview-20180605-02, )"
+        },
+        "Microsoft.NETCore.App": {
+          "suppressParent": "All",
+          "target": "Package",
+          "version": "[2.1.0-preview1-26216-03, )",
+          "autoReferenced": true
+        },
+        "NUnit": {
+          "target": "Package",
+          "version": "[3.10.1, )"
+        },
+        "NUnit3TestAdapter": {
+          "target": "Package",
+          "version": "[3.10.0, )"
+        }
+      },
+      "imports": [
+        "net461"
+      ],
+      "assetTargetFallback": true,
+      "warn": true
+    }
+  }
+}

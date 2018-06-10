@@ -4,7 +4,7 @@ namespace SecretChat
 {
     public class FileKeyReader : IKeyReader
     {
-        private const string pathToKey = "../../key.crypt";
+        private const string pathToKey = "../../Infrastructure/Addition files/key.crypt";
         private BinaryReader keyReader;
         
         public FileKeyReader()

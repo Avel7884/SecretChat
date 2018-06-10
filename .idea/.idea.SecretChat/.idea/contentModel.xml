@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="$USER_HOME$/.Rider2017.3/system/resharper-host/local/Transient/ReSharperHost/v11/SolutionCaches/_SecretChat.1827395304.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/netcoreapp1.0/Mono.Cecil.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/netcoreapp1.0/NUnit3.TestAdapter.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/netcoreapp1.0/NUnit3.TestAdapter.pdb" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.10.0/build/netcoreapp1.0/nunit.engine.netstandard.dll" t="Include" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="SecretChat" t="IncludeRecursive">
-        <e p=".gitignore" t="Include" />
         <e p="App.config" t="Include" />
         <e p="Application" t="Include">
           <e p="IMessanger.cs" t="Include" />
@@ -37,6 +40,9 @@
           </e>
         </e>
         <e p="Infrastructure" t="Include">
+          <e p="Addition files" t="Include">
+            <e p="key.crypt" t="Include" />
+          </e>
           <e p="ConsoleInterractor.cs" t="Include" />
           <e p="FileKeyReader.cs" t="Include" />
           <e p="IInteracter.cs" t="Include" />
@@ -50,11 +56,23 @@
         </e>
         <e p="SecretChat.csproj" t="IncludeRecursive" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="key.crypt" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
       </e>
       <e p="SecretChat.sln" t="IncludeFlat" />
+      <e p="SecretChatUnitTests" t="IncludeRecursive">
+        <e p="SecretChatUnitTests.cs" t="Include" />
+        <e p="SecretChatUnitTests.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="SecretChatUnitTests.AssemblyInfo.cs" t="Include" />
+              <e p="SecretChatUnitTests.Program.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
       <e p="packages" t="ExcludeRecursive" />
     </e>
   </component>

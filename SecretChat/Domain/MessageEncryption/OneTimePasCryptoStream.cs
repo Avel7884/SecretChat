@@ -37,7 +37,7 @@ namespace SecretChat
 
         public void WriteLine(string ps, string toWrite)
         {
-            if (!toWrite.All(c => 0 <= c && c <= 9))
+            if (!toWrite.All(c => '0' <= c && c <= '9'))
             {
                 UnderlayingWriter.WriteLine("Sorry, I can't decode this.\n" + ps + toWrite);
                 return;
