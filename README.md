@@ -35,18 +35,16 @@ _Название проекта SecretChat выбрано по аналогии
   
 ## Структура решения.
 
-  - В Infrastructure реализованы вспомогательные методы для работы с классом Bitmap, который мы использовали для визуализации игры.
-  (https://github.com/Tinsane/WarChess/blob/master/WarChess/Infrastructure/BitmapUtils.cs)
-  
-  - Логика игры собрана в Domain. 
+  - В Infrastructure реализованы вспомогательные классы например [KeyReader](https://github.com/Avel7884/SecretChat/blob/master/SecretChat/Infrastructure/FileKeyReader.cs), который используется для получения ключа.
+
+  - Логика приложения собрана в Domain. 
+  -- Логика работы с мессенджером находится в Domain.InteractionWithSomeMessanger
   Здесь есть классы и интерфейсы различного уровня абстракции,
-  от подходящего любой игре с "полем" и "ходами" AbstractGame до собственно шахмат Chess.
-  Самый низкий уровень абстракции - это класс [Game](https://github.com/Tinsane/WarChess/blob/master/WarChess/Domain/AbstractGame/Game.cs)
-  Далее по иерархии наследования идёт [GridGame2D](https://github.com/Tinsane/WarChess/blob/master/WarChess/Domain/GridGame2D/GridGame2D.cs), данный класс сужает множество описываемых игр до игр, которые идут на конечной двумерной прямоугольной доске с квадратными клеточками.
-  Далее идёт [ChessAlikeGame](https://github.com/Tinsane/WarChess/blob/master/WarChess/Domain/ChessAlike/ChessAlikeGame.cs) 
-  Это игра на шахматном поле n\*m, в которой каждая фигура имеет один из двух цветов - белый и чёрный и известно какие фигуры ходят в данный момент.
-  Ну и на последнем уровне абстракции - собственно ChessGame или какой-то другой класс, реализующий игру по конкретным правилам.
-  Чтобы лучше понять архитектуру программы, рассмотрим класс ChessGame. Он наследуется от абстрактного класса ChessAlikeGame и реализует интерфейс IChessGame, поскольку является точкой соединения логики Domain и Application. Класс ChessGame является сервисом, который предоставляет интерфейс работы с сущностями ChessGameState и передает во "внешний мир" логику взаимодействия с игрой. Основной функцией для взаимодествия игры с "внешним миром" является функция TryMakeMove(ChessPosition from, ChessPosition to). Эта функция пытается подобрать подходящий ход для движения с позиции from, на позицию to, а потом пытается применить его к игре. Для индикации того, нашелся ли подходящий ход, данная функция возвращает булево значение. Ход же в свою очередь является просто функцией, которая принимает текущее состояние игры и другие опциональные аргументы и возвращает либо новое валидное состояние игры, если ход удался, либо null, если данный ход не может быть выполнен в данной ситуации. Сами же ходы все наследуются от DirectedMove из ChessAlike, который описывает ход, который совершается фигурой для перемещения.
+   от подходящего любому мессенджеру с диалогами и залогиниванием до собственно реализации работы с VK.
+  Самый низкий уровень абстракции - это классы [AbstractInteractionWithMessanger](https://github.com/Avel7884/SecretChat/tree/master/SecretChat/Domain/InteractionWithSomeMessanger/AbstractInteractionWithMessanger)
+  Далее по иерархии наследования идёт [AbstractVkInteraction](https://github.com/Avel7884/SecretChat/tree/master/SecretChat/Domain/InteractionWithSomeMessanger/InteractionWithVk/AbstractVkInteraction), данные интерфейсы предполагают, что будут взаимодействовать именно с Vk.
+
+  Ну и на последнем уровне абстракции - собственно [CustomVkInteraction](https://github.com/Avel7884/SecretChat/tree/master/SecretChat/Domain/InteractionWithSomeMessanger/InteractionWithVk/CustomVkInteraction) или какие-то другие классы, позволяющие обмениваться сообщениями в мессенджере.
   
   - В Application находятся классы-прослойки между классами уровня Domain и UserInterface.
     Они реализуют различную логику несвязанную напрямую с игрой.
