@@ -65,15 +65,16 @@ namespace SecretChat
                 });
             var content = JObject.Parse(result);
             messages = content["items"]
-                            .Where(x => x.SelectToken("chat_id")?.ToString() == chat)
                             .Select(x =>
                             {
                                 lastMessageId = Math.Max(lastMessageId, int.Parse(x.SelectToken("id").ToString()));
-                                return new Message(
-                                    x.SelectToken("body").ToString(), 
-                                    UsersManager.GetNameById(x.SelectToken("user_id").ToString())
-                                    );
+                                return x;
                             })
+                            .Where(x => x.SelectToken("chat_id")?.ToString() == chat)
+                            .Select(x => new Message(
+                                x.SelectToken("body").ToString(), 
+                                UsersManager.GetNameById(x.SelectToken("user_id").ToString())
+                                ))
                             .Reverse()
                             .ToList();
             return messages.Count != 0;
