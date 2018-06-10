@@ -38,25 +38,16 @@ _Название проекта SecretChat выбрано по аналогии
   - В Infrastructure реализованы вспомогательные классы например [KeyReader](https://github.com/Avel7884/SecretChat/blob/master/SecretChat/Infrastructure/FileKeyReader.cs), который используется для получения ключа.
 
   - Логика приложения собрана в Domain. 
-  -- Логика работы с мессенджером находится в Domain.InteractionWithSomeMessanger
+  - Логика работы с мессенджером находится в Domain.InteractionWithSomeMessanger
   Здесь есть классы и интерфейсы различного уровня абстракции,
    от подходящего любому мессенджеру с диалогами и залогиниванием до собственно реализации работы с VK.
   Самый низкий уровень абстракции - это классы [AbstractInteractionWithMessanger](https://github.com/Avel7884/SecretChat/tree/master/SecretChat/Domain/InteractionWithSomeMessanger/AbstractInteractionWithMessanger)
   Далее по иерархии наследования идёт [AbstractVkInteraction](https://github.com/Avel7884/SecretChat/tree/master/SecretChat/Domain/InteractionWithSomeMessanger/InteractionWithVk/AbstractVkInteraction), данные интерфейсы предполагают, что будут взаимодействовать именно с Vk.
-
   Ну и на последнем уровне абстракции - собственно [CustomVkInteraction](https://github.com/Avel7884/SecretChat/tree/master/SecretChat/Domain/InteractionWithSomeMessanger/InteractionWithVk/CustomVkInteraction) или какие-то другие классы, позволяющие обмениваться сообщениями в мессенджере.
+
+  - Логика шифрования находится в Domain.MessageEncryption здесь есть абстрактный класс [MessageStream](https://github.com/Avel7884/SecretChat/blob/master/SecretChat/Domain/MessageEncryption/MessageStream.cs) и его реализация с шифром Вернама [OneTimePasCryptoStream](https://github.com/Avel7884/SecretChat/blob/master/SecretChat/Domain/MessageEncryption/OneTimePasCryptoStream.cs)
   
-  - В Application находятся классы-прослойки между классами уровня Domain и UserInterface.
-    Они реализуют различную логику несвязанную напрямую с игрой.
-    Например, класс [ChessAlikeApp](https://github.com/Tinsane/WarChess/blob/master/WarChess/Application/ChessAlikeApp.cs)
-    реализует логику, связанную с выделением фигуры, которой будет производится ход.
-    
-  - Наконец, в UserInterface собраны все формы, контролы и прочие вещи, необходимые для визуализации.
-    Во время реализации классов UserInterface мы старались делать Control-ы максимально глупыми.
-    Это позволяет переиспользовать одни и те же контролы для разных игр.
-    Например, контрол для шахматного поля [BoardControl](https://github.com/Tinsane/WarChess/blob/master/WarChess/UserInterface/BoardControl.cs) не знает ничего ни о каких шахматах. 
-    Ему просто передают картинки и он их рисует.
-    Также интересен [ChessAlikeGameControl](https://github.com/Tinsane/WarChess/blob/master/WarChess/UserInterface/ChessAlikeGameControl.cs), который принимает большое количество интерфейсов и реализует логику игры для произвольного IChessAlikeGame.
+  - В Application находится класс, соединяющий работу классов в Domain.InteractionWithSomeMessanger и в Domain.MessageEncryption а также простое взаимодействие с конольным интерфейсом. Консольный интерфейс был слишком прост, чтобы выделять под него отдельный класс (возможно, к защите проекта это изменится).
   
 ## DI-КОНТЕЙНЕР.
 Интерфайс [IConnecter](https://github.com/Avel7884/SecretChat/blob/master/SecretChat/Domain/InteractionWithSomeMessanger/AbstractInteractionWithMessanger/IConnecter.cs) является фабрикой, поэтому [IDialog](https://github.com/Avel7884/SecretChat/blob/master/SecretChat/Domain/InteractionWithSomeMessanger/AbstractInteractionWithMessanger/IDialog.cs) собирается внутри него при помощи конвенций.
