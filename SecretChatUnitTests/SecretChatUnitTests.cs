@@ -31,7 +31,7 @@ namespace SecretChatUnitTests
             
             A.CallTo(() => reader.ReadLine())
                 .Returns(text);
-            oneTimePad.WriteLine("", oneTimePad.ReadLine());
+            oneTimePad.WriteMessage("", oneTimePad.ReadMessage());
             
             A.CallTo(() => writer.WriteLine(A<string>.That.Matches(s => s == text)))
                 .MustHaveHappened(Repeated.Exactly.Once);   

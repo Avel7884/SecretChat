@@ -11,7 +11,7 @@ namespace SecretChat
         private Timer timer;
         private const string autrizeRequest = "https://oauth.vk.com/authorize?client_id={0}&display=popup&scope=4098&response_type=token&v={1}";
 
-        private static readonly Regex rx = new Regex(@"https://oauth.vk.com/blank.html#access_token=([0-9a-f]+)&expires_in=(\d+)&user_id=(\d+)",
+        private static readonly Regex rx = new Regex(@".*access_token=([0-9a-f]+)&expires_in=(\d+)&user_id=(\d+)",
             RegexOptions.Compiled);
 
         private readonly IInteracter interacter;

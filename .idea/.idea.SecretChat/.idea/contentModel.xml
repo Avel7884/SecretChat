@@ -35,7 +35,7 @@
             </e>
           </e>
           <e p="MessageEncryption" t="Include">
-            <e p="IMessageStream.cs" t="Include" />
+            <e p="MessageStream.cs" t="Include" />
             <e p="OneTimePasCryptoStream.cs" t="Include" />
           </e>
         </e>
