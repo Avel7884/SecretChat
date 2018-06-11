@@ -52,7 +52,7 @@ _Название проекта SecretChat выбрано по аналогии
 ## DI-КОНТЕЙНЕР
 Интерфейс [IConnecter](https://github.com/Avel7884/SecretChat/blob/master/SecretChat/Domain/InteractionWithSomeMessanger/AbstractInteractionWithMessanger/IConnecter.cs) является фабрикой, поэтому [IDialog](https://github.com/Avel7884/SecretChat/blob/master/SecretChat/Domain/InteractionWithSomeMessanger/AbstractInteractionWithMessanger/IDialog.cs) собирается внутри него при помощи конвенций.
 Остальное — явным конфигурированием.
-Синглтонами сделаны класс работы с API, класс взаимодействия с пользователем, 
+Синглтонами сделаны класс работы с API, класс взаимодействия с пользователем.
 Также синглтоном является класс VKUsersManager, поскольку его логика всегда одинаковая.
 
 ## Тесты
