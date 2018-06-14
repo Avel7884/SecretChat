@@ -29,6 +29,7 @@
               <e p="CustomVkInteraction" t="Include">
                 <e p="VKAPIRequests.cs" t="Include" />
                 <e p="VKDialog.cs" t="Include" />
+                <e p="VkApiCommands.cs" t="Include" />
                 <e p="VkConnecter.cs" t="Include" />
                 <e p="VkUsersManager.cs" t="Include" />
               </e>
@@ -43,7 +44,7 @@
           <e p="Addition files" t="Include">
             <e p="key.crypt" t="Include" />
           </e>
-          <e p="ConsoleInterractor.cs" t="Include" />
+          <e p="ConsoleInterracter.cs" t="Include" />
           <e p="FileKeyReader.cs" t="Include" />
           <e p="IInteracter.cs" t="Include" />
           <e p="IKeyReader.cs" t="Include" />

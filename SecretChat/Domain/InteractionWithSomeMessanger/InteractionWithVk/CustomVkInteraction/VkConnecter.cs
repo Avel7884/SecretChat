@@ -37,7 +37,7 @@ namespace SecretChat
 
         private void InitTimer()
         {
-            timer = new Timer() {AutoReset = true};
+            timer = new Timer {AutoReset = true};
             timer.Elapsed += (s, e) =>
                 InitToken();
         }

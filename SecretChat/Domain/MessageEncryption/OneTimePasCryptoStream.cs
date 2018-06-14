@@ -21,6 +21,8 @@ namespace SecretChat
 
         public override string ReadMessage()
         {
+            if (UnderlayingReader.Peek() == -1)
+                return "";
             var toRead = UnderlayingReader.ReadLine();
             var bytes = Encoding.UTF8.GetBytes(toRead);
             var buffer = new byte[bytes.Length];

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using Ninject;
+using Ninject.Extensions.Conventions;
 using Ninject.Syntax;
 
 namespace SecretChat
@@ -12,9 +13,7 @@ namespace SecretChat
         {
             var container = new StandardKernel();
             BindContainer(container);
-            
-            var messanger = container.Get<IMessanger>(); //new Messenger(new VkConnecter("6495077", new ConsoleInterractor()), new OneTimePasCryptoStream(Console.In, Console.Out, new KeyReader()), new ConsoleInterractor());
-
+            var messanger = container.Get<IMessanger>();
             while (true)
             {
                 messanger.GetMessages();
@@ -24,22 +23,24 @@ namespace SecretChat
 
         private static void BindContainer(IBindingRoot container)
         {
-            container.Bind<IVkUsersManager>().To<VKUsersManager>().InSingletonScope();
-            container.Bind<IVkApiRequests>().To<VkApiRequests>().InSingletonScope();
-            container.Bind<IInteracter>().To<ConsoleInterractor>().InSingletonScope();
+            container.Bind(c => c.FromThisAssembly().SelectAllClasses().InheritedFrom<IUsersManager>()
+                .BindAllInterfaces().Configure(b => b.InSingletonScope()));
+            container.Bind(c => c.FromThisAssembly().SelectAllClasses().InheritedFrom<IVkApiRequests>()
+                .BindAllInterfaces().Configure(b => b.InSingletonScope()));
+            container.Bind<IInteracter>().To<ConsoleInterracter>().InSingletonScope();
             container.Bind<MessageStream>().To<OneTimePasCryptoStream>();
             container.Bind<IKeyReader>().To<FileKeyReader>();
             container.Bind<TextReader>().ToConstant(Console.In);
             container.Bind<TextWriter>().ToConstant(Console.Out);
             container.Bind<IDialog>().To<VkDialog>();
-            container.Bind<IConnecter<IDialog>>().To<VkConnecter>();
-            container.Bind<string>().ToConstant("6495077");
+            container.Bind<IConnecter<IDialog>>().To<VkConnecter>()
+                .WithConstructorArgument("applicationClientId", "6495077");
             container.Bind<IMessanger>().To<Messanger>()
                 .OnActivation(m =>
-            {
-                m.LogIn();
-                m.CreateChat();
-            });
+                {
+                    m.LogIn();
+                    m.CreateChat();
+                });
         }
     }
 }

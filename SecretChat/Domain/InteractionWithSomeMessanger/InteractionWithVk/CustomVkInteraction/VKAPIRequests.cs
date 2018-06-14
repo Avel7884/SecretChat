@@ -11,15 +11,15 @@ namespace SecretChat
 {
     public class VkApiRequests : IVkApiRequests
     {
-        private const string apiPattern = "https://api.vk.com/method/{0}?{1}&access_token={2}&v={3}";
-        public Func<string> Token;
-        public string Ver = "";
+        private const string ApiPattern = "https://api.vk.com/method/{0}?{1}&access_token={2}&v={3}";
+        private Func<string> Token;
+        private string Ver = "";
 
         public string SendRequest(string method, Dictionary<string, string> parametrs)
         {
             if (Token == null)
                 throw new NullReferenceException();
-            var request = string.Format(apiPattern, method, string.Join("&", parametrs.Select(p => p.Key + "=" + p.Value)), Token(), Ver);
+            var request = string.Format(ApiPattern, method, string.Join("&", parametrs.Select(p => p.Key + "=" + p.Value)), Token(), Ver);
             // Console.WriteLine(request);
             var result = request.GetAsync().Result.Content
                 .ReadAsStringAsync().Result;

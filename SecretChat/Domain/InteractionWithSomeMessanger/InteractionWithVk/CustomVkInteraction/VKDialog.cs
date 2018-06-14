@@ -21,20 +21,26 @@ namespace SecretChat
             this.apiRequests = apiRequests;
             this.user = user;
             lastMessageId = 0;
-            if (!TryToConnectToExistedDialog())
-                CreateDialog(members);
+            members += " " + user;
+            var membersList = members.Split()
+                .OrderBy(m => m)
+                .Distinct()
+                .ToList();
+            if (!TryToConnectToExistedDialog(membersList))
+                CreateDialog(membersList);
         }
 
-        private const string commandGetDialogs = "messages.getDialogs";
-        private bool TryToConnectToExistedDialog()
+        
+        private bool TryToConnectToExistedDialog(List<string> members)
         {
-            var result = apiRequests.SendRequest(commandGetDialogs, new Dictionary<string, string>());
+            var result = apiRequests.SendRequest(VkApiCommands.GetDialogs, new Dictionary<string, string>());
             var content = JObject.Parse(result);
-            var idToken = content.SelectToken("items") //need to check on valid members
-                            ?.Select(x => x["message"])
-                             .FirstOrDefault(x => x.SelectToken("title")
-                                                    .ToString()
-                                                    .StartsWith("6495077"));
+            var idToken = content.SelectToken("items")
+                ?.Select(x => x["message"])
+                .Where(x => x.SelectToken("title")
+                    .ToString()
+                    .StartsWith("6495077"))
+                ?.FirstOrDefault(x => HasEqualsMembers(x.SelectToken("chat_id").ToString(), members));
             
             if (idToken == null) 
                 return false;
@@ -42,23 +48,35 @@ namespace SecretChat
             return true;
         }
 
-        private const string commandCreateChat = "messages.createChat";
+        private bool HasEqualsMembers(string chatId, List<string> members)
+        {
+            var result = apiRequests.SendRequest(VkApiCommands.GetChatUsers, new Dictionary<string, string>
+            {
+                {"chat_id", chatId}
+            });
+            var content = JToken.Parse(result);
+            var chatMembers = content.Values()
+                .Select(x => x.ToString())
+                .OrderBy(x => x)
+                .Distinct()
+                .ToList();
+            return members.SequenceEqual(chatMembers);
+        }
 
-        private void CreateDialog(string members)
+        private void CreateDialog(List<string> members)
         {
             chat = apiRequests.SendRequest(
-                commandCreateChat,
+                VkApiCommands.CreateChat,
                 new Dictionary<string, string>
                 {
-                    {"user_ids", members}, 
+                    {"user_ids", string.Join(",", members)}, 
                     {"title", "6495077 secret chat"}
                 });
         }
 
-        private const string commandGetMessage = "messages.get";
         public bool getMessages(out List<Message> messages)
         {
-            var result = apiRequests.SendRequest(commandGetMessage,
+            var result = apiRequests.SendRequest(VkApiCommands.GetMessages,
                 new Dictionary<string, string>
                 {
                     {"last_message_id", lastMessageId.ToString()}
@@ -80,13 +98,11 @@ namespace SecretChat
             return messages.Count != 0;
         }
 
-        private const string commandSendMessage = "messages.send";
-
         public bool sendMessage(string message)
         {
             try
             {
-                apiRequests.SendRequest(commandSendMessage, new Dictionary<string, string>
+                apiRequests.SendRequest(VkApiCommands.SendMessage, new Dictionary<string, string>
                 {
                     {"chat_id", chat},
                     {"message", message}
@@ -100,17 +116,15 @@ namespace SecretChat
             return true;
         }
 
-        private const string commandExit = "messages.removeChatUser";
-        private const string commandDelete = "messages.deleteDialog?user_id={0}&peer_id={1}&access_token={2}&v={3}";
         public void Dispose()
         {
-            apiRequests.SendRequest(commandExit, new Dictionary<string, string>
+            apiRequests.SendRequest(VkApiCommands.RemoveChat, new Dictionary<string, string>
             {
                 {"chat_id", chat},
                 {"user_id", user}
             });
             var peer = (chatBias + int.Parse(chat)).ToString();
-            apiRequests.SendRequest(commandDelete, new Dictionary<string, string>
+            apiRequests.SendRequest(VkApiCommands.DeleteDialog, new Dictionary<string, string>
             {
                 {"user_id", user},
                 {"peer_id", peer}

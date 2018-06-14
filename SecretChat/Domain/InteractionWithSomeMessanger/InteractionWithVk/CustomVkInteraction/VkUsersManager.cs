@@ -1,28 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Flurl.Http;
+using Flurl.Util;
 using Newtonsoft.Json.Linq;
 
 namespace SecretChat
 {
-    public class VKUsersManager : IVkUsersManager
+    public class VkUsersManager : IVkUsersManager
     {
         private static Dictionary<string, string> userById;
-        public IVkApiRequests apiRequests;
 
-        public VKUsersManager(IVkApiRequests apiRequests)
+        private static Dictionary<string, List<string>> IdsByName; 
+
+        public IVkApiRequests apiRequests;
+        private bool friendsWasSelected;
+
+        public VkUsersManager(IVkApiRequests apiRequests)
         {
             this.apiRequests = apiRequests;
             userById = new Dictionary<string, string>();
         }
         
-        private const string commandGetUser = "users.get";
-        
         public string GetNameById(string id)
         {
             if (!userById.ContainsKey(id))
             {
-                var result = apiRequests.SendRequest(commandGetUser, new Dictionary<string, string>
+                var result = apiRequests.SendRequest(VkApiCommands.GetUser, new Dictionary<string, string>
                 {
                     {"user_id", id}
                 });
@@ -36,10 +40,29 @@ namespace SecretChat
 
             return userById[id];
         }
-
+    
         public List<string> GetIdsByName(string name)
         {
-            throw new NotImplementedException();
+            if (!friendsWasSelected)
+            {
+                friendsWasSelected = true;
+                var result = apiRequests.SendRequest(VkApiCommands.GetFriends, new Dictionary<string, string>
+                {
+                    {"fields", "domain"}
+                });
+                var content = JObject.Parse(result);
+                userById.Merge(
+                    content["items"]
+                        .ToDictionary(t => t.SelectToken("id").ToString(),
+                            t => string.Join(" ", 
+                                t.SelectToken("first_name").ToString(), 
+                                t.SelectToken("last_name").ToString()))
+                    );
+            }
+
+            return userById.Where(p => p.Value.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0)
+                .Select(p => $"({p.Value}) -> {p.Key}")
+                .ToList();
         }
     }
 }
