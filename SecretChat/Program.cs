@@ -34,7 +34,7 @@ namespace SecretChat
                 .BindAllInterfaces().Configure(b => b.InSingletonScope()));
             container.Bind<IInteracter>().To<ConsoleInterracter>().InSingletonScope();
             container.Bind<IMessage>().To<Message>();
-            container.Bind<MessageStream<Message>>().To<OneTimePasCryptoStream>();
+            container.Bind<MessageStream<IMessage>>().To<OneTimePasCryptoStream>();
             container.Bind<IKeyReader>().To<FileKeyReader>();
             container.Bind<TextReader>().ToConstant(Console.In);
             container.Bind<TextWriter>().ToConstant(Console.Out);

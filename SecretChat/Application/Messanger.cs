@@ -7,12 +7,12 @@ namespace SecretChat.Application
     public class Messanger : IMessanger
     {
         private IConnecter<IDialog> connecter;
-        private MessageStream<Message> messageStream;
+        private MessageStream<IMessage> messageStream;
         private IInteracter interacter;
         private IDialog dialog;
         private IUsersManager usersManager;
 
-        public Messanger(IConnecter<IDialog> connecter, MessageStream<Message> messageStream, 
+        public Messanger(IConnecter<IDialog> connecter, MessageStream<IMessage> messageStream, 
             IUsersManager usersManager, IInteracter interacter)
         {
             this.connecter = connecter;
@@ -43,13 +43,13 @@ namespace SecretChat.Application
         public void SendMessage()
         {
             var message = messageStream.ReadMessage();
-            dialog.sendMessage(message);
+            if (dialog.SendMessage(message)) ;
         }
 
         public void GetMessages()
         {
-            if (!dialog.getMessages(out var messages)) return;
-            foreach (var message in messages)
+            if (!dialog.GetMessages(out var messages)) return;
+            foreach (Message message in messages)
             {
                 messageStream.WriteMessage(message);
             }

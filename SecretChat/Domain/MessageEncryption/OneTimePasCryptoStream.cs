@@ -6,7 +6,7 @@ using SecretChat.Infrastructure;
 
 namespace SecretChat.Domain.MessageEncryption
 {
-    public class OneTimePasCryptoStream : MessageStream<Message>
+    public class OneTimePasCryptoStream : MessageStream<IMessage>
     {
         private TextReader UnderlayingReader { get; }
         private TextWriter UnderlayingWriter { get; }
@@ -19,7 +19,7 @@ namespace SecretChat.Domain.MessageEncryption
             this.keyReader = keyReader;
         }
 
-        public override Message ReadMessage()
+        public override IMessage ReadMessage()
         {
             var toRead = UnderlayingReader.ReadLine();
             var bytes = Encoding.UTF8.GetBytes(toRead);
@@ -29,7 +29,7 @@ namespace SecretChat.Domain.MessageEncryption
                             .Select((t, i) => (t ^ buffer[i]).ToString("D3"))), "");
         }
 
-        public override void WriteMessage(Message message)
+        public override void WriteMessage(IMessage message)
         {
             var content = message.Content;
             if (!content.All(c => '0' <= c && c <= '9'))

@@ -75,7 +75,7 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
                 });
         }
 
-        public bool getMessages(out List<Message> messages)
+        public bool GetMessages(out List<IMessage> messages)
         {
             var result = apiRequests.SendRequest(VkApiCommands.GetMessages,
                 new Dictionary<string, string>
@@ -83,23 +83,23 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
                     {"last_message_id", lastMessageId.ToString()}
                 });
             var content = JObject.Parse(result);
-            messages = content["items"]
-                            .Select(x =>
-                            {
-                                lastMessageId = Math.Max(lastMessageId, int.Parse(x.SelectToken("id").ToString()));
-                                return x;
-                            })
-                            .Where(x => x.SelectToken("chat_id")?.ToString() == chat)
-                            .Select(x => new Message(
-                                x.SelectToken("body").ToString(), 
-                                UsersManager.GetNameById(x.SelectToken("user_id").ToString())
-                                ))
-                            .Reverse()
-                            .ToList();
+            messages = new List<IMessage>(content["items"]
+                .Select(x =>
+                {
+                    lastMessageId = Math.Max(lastMessageId, int.Parse(x.SelectToken("id").ToString()));
+                    return x;
+                })
+                .Where(x => x.SelectToken("chat_id")?.ToString() == chat)
+                .Select(x => new Message(
+                    x.SelectToken("body").ToString(), 
+                    UsersManager.GetNameById(x.SelectToken("user_id").ToString())
+                ))
+                .Reverse()
+                .ToList());
             return messages.Count != 0;
         }
 
-        public bool sendMessage(IMessage message)
+        public bool SendMessage(IMessage message)
         {
             try
             {

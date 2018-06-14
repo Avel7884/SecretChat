@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWithMessanger
 {
-    public interface IDialog: IDisposable 
+    public interface IDialog
     {
-        bool getMessages(out List<Message> messages);
-        bool sendMessage(IMessage messages);
+        bool GetMessages(out List<IMessage> messages);
+        bool SendMessage(IMessage messages);
     }
 }
