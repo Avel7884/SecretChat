@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace SecretChat
+namespace SecretChat.Infrastructure
 {
     public class FileKeyReader : IKeyReader
     {

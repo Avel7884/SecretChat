@@ -1,9 +1,14 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Forms;
 using Ninject;
 using Ninject.Extensions.Conventions;
 using Ninject.Syntax;
+using SecretChat.Application;
+using SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWithMessanger;
+using SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.AbstractVkInteraction;
+using SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.CustomVkInteraction;
+using SecretChat.Domain.MessageEncryption;
+using SecretChat.Infrastructure;
 
 namespace SecretChat
 {
@@ -28,7 +33,8 @@ namespace SecretChat
             container.Bind(c => c.FromThisAssembly().SelectAllClasses().InheritedFrom<IVkApiRequests>()
                 .BindAllInterfaces().Configure(b => b.InSingletonScope()));
             container.Bind<IInteracter>().To<ConsoleInterracter>().InSingletonScope();
-            container.Bind<MessageStream>().To<OneTimePasCryptoStream>();
+            container.Bind<IMessage>().To<Message>();
+            container.Bind<MessageStream<Message>>().To<OneTimePasCryptoStream>();
             container.Bind<IKeyReader>().To<FileKeyReader>();
             container.Bind<TextReader>().ToConstant(Console.In);
             container.Bind<TextWriter>().ToConstant(Console.Out);

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Text.RegularExpressions;
 using System.Timers;
+using SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWithMessanger;
+using SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.AbstractVkInteraction;
+using SecretChat.Infrastructure;
 
-namespace SecretChat
+namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.CustomVkInteraction
 {
     class VkConnecter: IConnecter<VkDialog>
     {
@@ -52,14 +53,9 @@ namespace SecretChat
             interacter.WriteLine($"Welcome, {usersManager.GetNameById(user)}!");
         }
 
-        public VkDialog StartDialog(IEnumerable ids)
+        public VkDialog StartDialog(string ids)
         {
-            return new VkDialog(user, string.Join(",", ids), usersManager, apiRequests);
-        }
-
-        public Dictionary<string, string> GetFriends()
-        {
-            throw new NotImplementedException();
+            return new VkDialog(user, ids, usersManager, apiRequests);
         }
 
         private void InitToken()

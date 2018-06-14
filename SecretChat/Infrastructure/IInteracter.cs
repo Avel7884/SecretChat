@@ -1,4 +1,4 @@
-﻿namespace SecretChat
+﻿namespace SecretChat.Infrastructure
 {
     public interface IInteracter
     {

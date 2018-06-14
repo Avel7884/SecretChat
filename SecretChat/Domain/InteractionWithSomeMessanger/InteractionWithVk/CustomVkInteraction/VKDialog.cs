@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Flurl.Http;
 using Newtonsoft.Json.Linq;
+using SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWithMessanger;
+using SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.AbstractVkInteraction;
 
-namespace SecretChat
+namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.CustomVkInteraction
 {
     class VkDialog: IDialog
     {
         private int lastMessageId;
-        private string user;
+        private readonly string user;
         private string chat;
         private const int chatBias = (int)2e9;
-        private IVkApiRequests apiRequests;
-        public IVkUsersManager UsersManager;
+        private readonly IVkApiRequests apiRequests;
+        private readonly IVkUsersManager UsersManager;
 
         public VkDialog(string user, string members, IVkUsersManager usersManager, IVkApiRequests apiRequests)
         {
@@ -63,7 +64,7 @@ namespace SecretChat
             return members.SequenceEqual(chatMembers);
         }
 
-        private void CreateDialog(List<string> members)
+        private void CreateDialog(IEnumerable<string> members)
         {
             chat = apiRequests.SendRequest(
                 VkApiCommands.CreateChat,
@@ -98,14 +99,14 @@ namespace SecretChat
             return messages.Count != 0;
         }
 
-        public bool sendMessage(string message)
+        public bool sendMessage(IMessage message)
         {
             try
             {
                 apiRequests.SendRequest(VkApiCommands.SendMessage, new Dictionary<string, string>
                 {
                     {"chat_id", chat},
-                    {"message", message}
+                    {"message", message.ToString()}
                 });
             }
             catch (ArgumentException)

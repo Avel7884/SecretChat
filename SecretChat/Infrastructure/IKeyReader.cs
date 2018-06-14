@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SecretChat
+namespace SecretChat.Infrastructure
 {
     public interface IKeyReader : IDisposable
     {

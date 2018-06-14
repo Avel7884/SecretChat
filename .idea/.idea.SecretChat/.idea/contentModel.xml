@@ -34,6 +34,10 @@
                 <e p="VkUsersManager.cs" t="Include" />
               </e>
             </e>
+            <e p="Message" t="Include">
+              <e p="IMessage.cs" t="Include" />
+              <e p="Message.cs" t="Include" />
+            </e>
           </e>
           <e p="MessageEncryption" t="Include">
             <e p="MessageStream.cs" t="Include" />
@@ -48,8 +52,6 @@
           <e p="FileKeyReader.cs" t="Include" />
           <e p="IInteracter.cs" t="Include" />
           <e p="IKeyReader.cs" t="Include" />
-          <e p="Message.cs" t="Include" />
-          <e p="StealedWebServr.cs" t="Include" />
         </e>
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">

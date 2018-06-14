@@ -7,6 +7,8 @@ using NUnit.Framework;
 using FakeItEasy;
 using NUnit.Framework.Internal;
 using SecretChat;
+using SecretChat.Domain.MessageEncryption;
+using SecretChat.Infrastructure;
 
 namespace SecretChatUnitTests
 {
@@ -31,9 +33,10 @@ namespace SecretChatUnitTests
             
             A.CallTo(() => reader.ReadLine())
                 .Returns(text);
-            oneTimePad.WriteMessage("", oneTimePad.ReadMessage());
+            oneTimePad.WriteMessage(oneTimePad.ReadMessage());
+            var msg = new Message(text);
             
-            A.CallTo(() => writer.WriteLine(A<string>.That.Matches(s => s == text)))
+            A.CallTo(() => writer.WriteLine(A<string>.That.Matches(s => s.Equals(msg.ToString()))))
                 .MustHaveHappened(Repeated.Exactly.Once);   
         }
 

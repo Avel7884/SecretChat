@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
-namespace SecretChat
+namespace SecretChat.Infrastructure
 {
     public class ConsoleInterracter : IInteracter
     {

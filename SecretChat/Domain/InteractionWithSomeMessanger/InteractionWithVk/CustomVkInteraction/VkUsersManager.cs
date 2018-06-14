@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Flurl.Http;
 using Flurl.Util;
 using Newtonsoft.Json.Linq;
+using SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.AbstractVkInteraction;
 
-namespace SecretChat
+namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.CustomVkInteraction
 {
     public class VkUsersManager : IVkUsersManager
     {

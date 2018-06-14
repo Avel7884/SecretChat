@@ -1,6 +1,7 @@
 ﻿using System;
+using SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWithMessanger;
 
-namespace SecretChat
+namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.AbstractVkInteraction
 {
     public interface IVkApiRequests : IApiRequests
     {

@@ -1,4 +1,4 @@
-﻿namespace SecretChat
+﻿namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.CustomVkInteraction
 {
     public static class VkApiCommands
     {

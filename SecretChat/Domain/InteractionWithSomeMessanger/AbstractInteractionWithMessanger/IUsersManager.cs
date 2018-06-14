@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SecretChat
+namespace SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWithMessanger
 {
     public interface IUsersManager
     {

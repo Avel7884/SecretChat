@@ -1,4 +1,4 @@
-﻿namespace SecretChat
+﻿namespace SecretChat.Application
 {
     public interface IMessanger
     {

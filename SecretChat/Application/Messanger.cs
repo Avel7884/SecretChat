@@ -1,16 +1,18 @@
-﻿using System;
+﻿using SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWithMessanger;
+using SecretChat.Domain.MessageEncryption;
+using SecretChat.Infrastructure;
 
-namespace SecretChat
+namespace SecretChat.Application
 {
     public class Messanger : IMessanger
     {
         private IConnecter<IDialog> connecter;
-        private MessageStream messageStream;
+        private MessageStream<Message> messageStream;
         private IInteracter interacter;
         private IDialog dialog;
         private IUsersManager usersManager;
 
-        public Messanger(IConnecter<IDialog> connecter, MessageStream messageStream, 
+        public Messanger(IConnecter<IDialog> connecter, MessageStream<Message> messageStream, 
             IUsersManager usersManager, IInteracter interacter)
         {
             this.connecter = connecter;
@@ -49,7 +51,7 @@ namespace SecretChat
             if (!dialog.getMessages(out var messages)) return;
             foreach (var message in messages)
             {
-                messageStream.WriteMessage($"({message.Sender}) > ", message.Content);
+                messageStream.WriteMessage(message);
             }
         }
     }

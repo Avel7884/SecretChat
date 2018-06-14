@@ -1,13 +1,13 @@
 ﻿using System.IO;
 
-namespace SecretChat
+namespace SecretChat.Domain.MessageEncryption
 {
-    public abstract class MessageStream
+    public abstract class MessageStream<IMessage>
     {
         private TextReader UnderlayingReader;
         private TextWriter UnderlayingWriter;
         
-        public abstract string ReadMessage();
-        public abstract void WriteMessage(string ps, string toWrite);
+        public abstract IMessage ReadMessage();
+        public abstract void WriteMessage(IMessage message);
     }
 }

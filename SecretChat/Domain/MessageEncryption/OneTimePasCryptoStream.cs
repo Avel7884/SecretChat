@@ -1,52 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using SecretChat.Infrastructure;
 
-namespace SecretChat
+namespace SecretChat.Domain.MessageEncryption
 {
-    public class OneTimePasCryptoStream : MessageStream
+    public class OneTimePasCryptoStream : MessageStream<Message>
     {
         private TextReader UnderlayingReader { get; }
         private TextWriter UnderlayingWriter { get; }
         private readonly IKeyReader keyReader;
 
-        public OneTimePasCryptoStream(TextReader Reader, TextWriter Writer, IKeyReader keyReader)
+        public OneTimePasCryptoStream(TextReader reader, TextWriter writer, IKeyReader keyReader)
         {
-            UnderlayingReader = Reader;
-            UnderlayingWriter = Writer;
+            UnderlayingReader = reader;
+            UnderlayingWriter = writer;
             this.keyReader = keyReader;
         }
 
-        public override string ReadMessage()
+        public override Message ReadMessage()
         {
-            if (UnderlayingReader.Peek() == -1)
-                return "";
             var toRead = UnderlayingReader.ReadLine();
             var bytes = Encoding.UTF8.GetBytes(toRead);
             var buffer = new byte[bytes.Length];
             keyReader.ReadKey(buffer, 0, bytes.Length);
-            var sb = new StringBuilder();
-            return string.Join("", bytes
-                            .Select((t, i) => (t ^ buffer[i]).ToString("D3")));
+            return new Message(string.Join("", bytes
+                            .Select((t, i) => (t ^ buffer[i]).ToString("D3"))), "");
         }
 
-        public override void WriteMessage(string ps, string toWrite)
+        public override void WriteMessage(Message message)
         {
-            if (!toWrite.All(c => '0' <= c && c <= '9'))
+            var content = message.Content;
+            if (!content.All(c => '0' <= c && c <= '9'))
             {
-                UnderlayingWriter.WriteLine("Sorry, I can't decode this.\n" + ps + toWrite);
+                UnderlayingWriter.WriteLine("Sorry, I can't decode this.\n" + message.ToString());
                 return;
             }
-            var bytes = new Byte[toWrite.Length / 3];
+            var bytes = new Byte[content.Length / 3];
             var buffer = new byte[bytes.Length];
             keyReader.ReadKey(buffer, 0, buffer.Length);
             for (int i = 0; i < bytes.Length; ++i)
             {
-                bytes[i] = (byte) (int.Parse(toWrite.Substring(i * 3, 3)) ^ buffer[i]);
+                bytes[i] = (byte) (int.Parse(content.Substring(i * 3, 3)) ^ buffer[i]);
             }
-            UnderlayingWriter.WriteLine(ps + Encoding.UTF8.GetString(bytes)); 
+            UnderlayingWriter.WriteLine(message.Head + Encoding.UTF8.GetString(bytes) + message.Tail); 
         }
     }
 }

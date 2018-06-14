@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SecretChat
+namespace SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWithMessanger
 {
     public interface IDialog: IDisposable 
     {
         bool getMessages(out List<Message> messages);
-        bool sendMessage(string messages);
+        bool sendMessage(IMessage messages);
     }
 }
