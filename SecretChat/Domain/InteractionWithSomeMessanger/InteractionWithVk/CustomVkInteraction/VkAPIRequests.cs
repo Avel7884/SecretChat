@@ -23,7 +23,11 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
                 .ReadAsStringAsync().Result;
             var jtok = JObject.Parse(result);
             if (jtok.SelectToken("error") != null)
+            {
+                Console.Error.Write(result);
                 throw new ArgumentException();
+            }
+
             return jtok.SelectToken("response").ToString();
         }
 

@@ -2,10 +2,8 @@
 using System.IO;
 using Ninject;
 using Ninject.Extensions.Conventions;
-using Ninject.Syntax;
 using SecretChat.Application;
 using SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWithMessanger;
-using SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.AbstractVkInteraction;
 using SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.CustomVkInteraction;
 using SecretChat.Domain.MessageEncryption;
 using SecretChat.Infrastructure;
@@ -27,7 +25,7 @@ namespace SecretChat
             }
         }
 
-        private static void BindContainer(IBindingRoot container)
+        private static void BindContainer(StandardKernel container)
         {
             container.Bind(c => c.FromThisAssembly().SelectAllClasses().InheritedFrom<IUsersManager>()
                 .BindAllInterfaces().Configure(b => b.InSingletonScope()));
