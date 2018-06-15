@@ -11,6 +11,8 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
     public class VkApiRequests : IVkApiRequests
     {
         private const string ApiPattern = "https://api.vk.com/method/{0}?{1}&access_token={2}&v={3}";
+        private Func<string> token;
+        private string ver;
 
         public string SendRequest(string method, Dictionary<string, string> parametrs)
         {
@@ -27,23 +29,23 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
 
         public Func<string> Token
         {
-            private get => Token;
+            private get => token;
             set
             {
-                if (Token != null)
+                if (token != null)
                     throw new AccessViolationException();
-                Token = value;
+                token = value;
             }
         }
 
         public string Ver
         {
-            private get => Ver;
+            private get => ver;
             set
             {
-                if (Ver != null)
+                if (ver != null)
                     throw new AccessViolationException();
-                Ver = value;
+                ver = value;
             }
         }
     }
