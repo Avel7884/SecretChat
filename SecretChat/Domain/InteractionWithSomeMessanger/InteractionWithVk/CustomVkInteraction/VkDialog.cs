@@ -106,7 +106,7 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
                 apiRequests.SendRequest(VkApiCommands.SendMessage, new Dictionary<string, string>
                 {
                     {"chat_id", chat},
-                    {"message", message.ToString()}
+                    {"message", message.Content}
                 });
             }
             catch (ArgumentException)
