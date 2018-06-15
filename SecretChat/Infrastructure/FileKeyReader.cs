@@ -4,12 +4,12 @@ namespace SecretChat.Infrastructure
 {
     public class FileKeyReader : IKeyReader
     {
-        private const string pathToKey = "../../Infrastructure/Addition files/key.crypt";
+        private const string PathToKey = "../../Infrastructure/Addition files/key.crypt";
         private BinaryReader keyReader;
         
         public FileKeyReader()
         {
-            keyReader = new BinaryReader(File.Open(pathToKey, FileMode.Open));
+            keyReader = new BinaryReader(File.Open(PathToKey, FileMode.Open));
         }
 
         public void Dispose()
@@ -32,9 +32,11 @@ namespace SecretChat.Infrastructure
             while (readed != count)
             {
                 keyReader.Close();
-                keyReader = new BinaryReader(File.Open(pathToKey, FileMode.Open));
+                keyReader = new BinaryReader(File.Open(PathToKey, FileMode.Open));
                 readed += keyReader.Read(buffer, readed, count - readed);
             }
         }
     }
+    
+    
 }

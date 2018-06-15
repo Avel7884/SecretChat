@@ -11,7 +11,7 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
     {
         private static Dictionary<string, string> userById;
 
-        public IVkApiRequests ApiRequests;
+        public readonly IVkApiRequests ApiRequests;
         private bool friendsWasSelected;
 
         public VkUsersManager(IVkApiRequests apiRequests)

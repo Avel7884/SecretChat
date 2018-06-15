@@ -14,6 +14,7 @@ namespace SecretChat
 {
     class Program
     {
+        private const string applicationClientId = "6495077";
         static void Main(string[] args)
         {
             var container = new StandardKernel();
@@ -40,7 +41,7 @@ namespace SecretChat
             container.Bind<TextWriter>().ToConstant(Console.Out);
             container.Bind<IDialog>().To<VkDialog>();
             container.Bind<IConnecter<IDialog>>().To<VkConnecter>()
-                .WithConstructorArgument("applicationClientId", "6495077");
+                .WithConstructorArgument("applicationClientId", applicationClientId);
             container.Bind<IMessanger>().To<Messanger>()
                 .OnActivation(m =>
                 {

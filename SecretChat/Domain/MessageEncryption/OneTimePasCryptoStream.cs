@@ -34,7 +34,8 @@ namespace SecretChat.Domain.MessageEncryption
             var content = message.Content;
             if (!content.All(c => '0' <= c && c <= '9'))
             {
-                UnderlayingWriter.WriteLine("Sorry, I can't decode this.\n" + message.ToString());
+                UnderlayingWriter.WriteLine("Sorry, I can't decode this.\n" 
+                                            + message.ToString());
                 return;
             }
             var bytes = new Byte[content.Length / 3];
@@ -44,7 +45,9 @@ namespace SecretChat.Domain.MessageEncryption
             {
                 bytes[i] = (byte) (int.Parse(content.Substring(i * 3, 3)) ^ buffer[i]);
             }
-            UnderlayingWriter.WriteLine(message.Head + Encoding.UTF8.GetString(bytes) + message.Tail); 
+            UnderlayingWriter.WriteLine(message.Head + 
+                                        Encoding.UTF8.GetString(bytes) + 
+                                        message.Tail); 
         }
     }
 }

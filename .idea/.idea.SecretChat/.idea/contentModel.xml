@@ -27,10 +27,10 @@
                 <e p="IVkUsersManager.cs" t="Include" />
               </e>
               <e p="CustomVkInteraction" t="Include">
-                <e p="VKAPIRequests.cs" t="Include" />
-                <e p="VKDialog.cs" t="Include" />
+                <e p="VkAPIRequests.cs" t="Include" />
                 <e p="VkApiCommands.cs" t="Include" />
                 <e p="VkConnecter.cs" t="Include" />
+                <e p="VkDialog.cs" t="Include" />
                 <e p="VkUsersManager.cs" t="Include" />
               </e>
             </e>
