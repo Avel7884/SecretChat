@@ -11,14 +11,13 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
     {
         private static Dictionary<string, string> userById;
 
-        private static Dictionary<string, List<string>> IdsByName; 
-
-        public IVkApiRequests apiRequests;
+        public IVkApiRequests ApiRequests;
         private bool friendsWasSelected;
 
         public VkUsersManager(IVkApiRequests apiRequests)
         {
-            this.apiRequests = apiRequests;
+            friendsWasSelected = false;
+            ApiRequests = apiRequests;
             userById = new Dictionary<string, string>();
         }
         
@@ -26,11 +25,10 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
         {
             if (!userById.ContainsKey(id))
             {
-                var result = apiRequests.SendRequest(VkApiCommands.GetUser, new Dictionary<string, string>
+                var result = ApiRequests.SendRequest(VkApiCommands.GetUser, new Dictionary<string, string>
                 {
                     {"user_id", id}
                 });
-                // Console.WriteLine(result);
                 var content = JToken.Parse(result)[0];
                 var name = string.Join(" ", 
                     content.SelectToken("first_name").ToString(), 
@@ -41,28 +39,32 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
             return userById[id];
         }
     
-        public List<string> GetIdsByName(string name)
+        public IEnumerable<string> GetIdsByName(string name)
         {
             if (!friendsWasSelected)
             {
                 friendsWasSelected = true;
-                var result = apiRequests.SendRequest(VkApiCommands.GetFriends, new Dictionary<string, string>
-                {
-                    {"fields", "domain"}
-                });
-                var content = JObject.Parse(result);
-                userById.Merge(
-                    content["items"]
-                        .ToDictionary(t => t.SelectToken("id").ToString(),
-                            t => string.Join(" ", 
-                                t.SelectToken("first_name").ToString(), 
-                                t.SelectToken("last_name").ToString()))
-                    );
+                SelectFriends();
             }
 
             return userById.Where(p => p.Value.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0)
-                .Select(p => $"({p.Value}) -> {p.Key}")
-                .ToList();
+                .Select(p => $"({p.Value}) -> {p.Key}");
+        }
+
+        private void SelectFriends()
+        {
+            var result = ApiRequests.SendRequest(VkApiCommands.GetFriends, new Dictionary<string, string>
+                {
+                    {"fields", "domain"}
+                });
+            var content = JObject.Parse(result);
+            userById.Merge(
+                content["items"]
+                    .ToDictionary(t => t.SelectToken("id").ToString(),
+                        t => string.Join(" ", 
+                            t.SelectToken("first_name").ToString(), 
+                            t.SelectToken("last_name").ToString()))
+                );
         }
     }
 }

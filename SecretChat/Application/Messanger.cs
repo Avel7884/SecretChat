@@ -7,12 +7,12 @@ namespace SecretChat.Application
     public class Messanger : IMessanger
     {
         private IConnecter<IDialog> connecter;
-        private MessageStream<IMessage> messageStream;
+        private IMessageStream<IMessage> messageStream;
         private IInteracter interacter;
         private IDialog dialog;
         private IUsersManager usersManager;
 
-        public Messanger(IConnecter<IDialog> connecter, MessageStream<IMessage> messageStream, 
+        public Messanger(IConnecter<IDialog> connecter, IMessageStream<IMessage> messageStream, 
             IUsersManager usersManager, IInteracter interacter)
         {
             this.connecter = connecter;
@@ -28,15 +28,7 @@ namespace SecretChat.Application
 
         public void CreateChat()
         {
-            interacter.WriteLine("Write users id separated by space\n" +
-                                 "If you want to get id of users in your friend list, write '? <User Name>'");
-            var users = interacter.ReadLine();
-            while (users.StartsWith("?"))
-            {
-                interacter.WriteLine(string.Join("\n", usersManager.GetIdsByName(users.Split()[1])));
-                users = interacter.ReadLine();
-            }
-            dialog = connecter.StartDialog(users);
+            dialog = connecter.StartDialog();
             interacter.WriteLine("Connection is successful! You can start messaging!");
         }
 

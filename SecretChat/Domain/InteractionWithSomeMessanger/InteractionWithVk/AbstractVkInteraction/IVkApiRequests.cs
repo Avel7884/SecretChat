@@ -5,7 +5,7 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Abstr
 {
     public interface IVkApiRequests : IApiRequests
     {
-        void SetToken(Func<string> token);
-        void SetVersion(string ver);
+        Func<string> Token { set; }
+        string Ver { set; }
     }
 }

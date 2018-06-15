@@ -6,6 +6,6 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWith
     public interface IConnecter<out T> where T : IDialog
     {
         void Connect();
-        T StartDialog(string ids);
+        T StartDialog();
     }
 }

@@ -5,6 +5,5 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.AbstractInteractionWith
     public interface IUsersManager
     {
         string GetNameById(string id);
-        List<string> GetIdsByName(string name);
     }
 }

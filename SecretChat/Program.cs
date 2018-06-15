@@ -30,11 +30,11 @@ namespace SecretChat
         {
             container.Bind(c => c.FromThisAssembly().SelectAllClasses().InheritedFrom<IUsersManager>()
                 .BindAllInterfaces().Configure(b => b.InSingletonScope()));
-            container.Bind(c => c.FromThisAssembly().SelectAllClasses().InheritedFrom<IVkApiRequests>()
+            container.Bind(c => c.FromThisAssembly().SelectAllClasses().InheritedFrom<IApiRequests>()
                 .BindAllInterfaces().Configure(b => b.InSingletonScope()));
             container.Bind<IInteracter>().To<ConsoleInterracter>().InSingletonScope();
             container.Bind<IMessage>().To<Message>();
-            container.Bind<MessageStream<IMessage>>().To<OneTimePasCryptoStream>();
+            container.Bind<IMessageStream<IMessage>>().To<OneTimePasCryptoStream>();
             container.Bind<IKeyReader>().To<FileKeyReader>();
             container.Bind<TextReader>().ToConstant(Console.In);
             container.Bind<TextWriter>().ToConstant(Console.Out);

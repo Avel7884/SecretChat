@@ -2,12 +2,9 @@
 
 namespace SecretChat.Domain.MessageEncryption
 {
-    public abstract class MessageStream<T> where T : IMessage
+    public interface IMessageStream<T> where T : IMessage
     {
-        private TextReader UnderlayingReader;
-        private TextWriter UnderlayingWriter;
-        
-        public abstract T ReadMessage();
-        public abstract void WriteMessage(T message);
+        T ReadMessage();
+        void WriteMessage(T message);
     }
 }

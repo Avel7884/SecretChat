@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Flurl.Http;
 using Newtonsoft.Json.Linq;
 using SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.AbstractVkInteraction;
@@ -10,14 +11,12 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
     public class VkApiRequests : IVkApiRequests
     {
         private const string ApiPattern = "https://api.vk.com/method/{0}?{1}&access_token={2}&v={3}";
-        private Func<string> token;
-        private string ver = "";
 
         public string SendRequest(string method, Dictionary<string, string> parametrs)
         {
-            if (token == null)
+            if (Token == null)
                 throw new NullReferenceException();
-            var request = string.Format(ApiPattern, method, string.Join("&", parametrs.Select(p => p.Key + "=" + p.Value)), token(), ver);
+            var request = string.Format(ApiPattern, method, string.Join("&", parametrs.Select(p => p.Key + "=" + p.Value)), Token(), Ver);
             var result = request.GetAsync().Result.Content
                 .ReadAsStringAsync().Result;
             var jtok = JObject.Parse(result);
@@ -26,18 +25,26 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
             return jtok.SelectToken("response").ToString();
         }
 
-        public void SetToken(Func<string> token)
+        public Func<string> Token
         {
-            if (this.token != null)
-                throw new AccessViolationException();
-            this.token = token;
+            private get => Token;
+            set
+            {
+                if (Token != null)
+                    throw new AccessViolationException();
+                Token = value;
+            }
         }
 
-        public void SetVersion(string ver)
+        public string Ver
         {
-            if (!this.ver.Equals(""))
-                throw new AccessViolationException();
-            this.ver = ver;
+            private get => Ver;
+            set
+            {
+                if (Ver != null)
+                    throw new AccessViolationException();
+                Ver = value;
+            }
         }
     }
 

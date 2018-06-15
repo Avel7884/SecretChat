@@ -48,14 +48,29 @@ namespace SecretChat.Domain.InteractionWithSomeMessanger.InteractionWithVk.Custo
         public void Connect()
         {
             InitToken();
-            apiRequests.SetToken(() => Token);
-            apiRequests.SetVersion(ver);
+            apiRequests.Token = () => Token;
+            apiRequests.Ver = ver;
             interacter.WriteLine($"Welcome, {usersManager.GetNameById(user)}!");
         }
 
-        public VkDialog StartDialog(string ids)
+        public VkDialog StartDialog()
         {
-            return new VkDialog(user, ids, usersManager, apiRequests);
+            var users = GetDialogUsers();
+            return new VkDialog(user, users, usersManager, apiRequests);
+        }
+
+        private string GetDialogUsers()
+        {
+            interacter.WriteLine("Write users id separated by space\n" +
+                                 "If you want to get id of users in your friend list, write '? <User Name>'");
+            var users = interacter.ReadLine();
+            while (users.StartsWith("?"))
+            {
+                interacter.WriteLine(string.Join("\n", usersManager.GetIdsByName(users.Split()[1])));
+                users = interacter.ReadLine();
+            }
+
+            return users;
         }
 
         private void InitToken()
