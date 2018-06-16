@@ -1,6 +1,7 @@
-﻿namespace SecretChat.Application
+﻿// ReSharper disable All
+namespace SecretChat.Application
 {
-    public interface IMessanger
+    public interface IMessenger
     {
         void LogIn();
         void CreateChat();

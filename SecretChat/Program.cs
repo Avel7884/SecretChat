@@ -17,7 +17,7 @@ namespace SecretChat
         {
             var container = new StandardKernel();
             BindContainer(container);
-            var messanger = container.Get<IMessanger>();
+            var messanger = container.Get<IMessenger>();
             while (true)
             {
                 messanger.GetMessages();
@@ -40,7 +40,7 @@ namespace SecretChat
             container.Bind<IDialog>().To<VkDialog>();
             container.Bind<IConnecter<IDialog>>().To<VkConnecter>()
                 .WithConstructorArgument("applicationClientId", applicationClientId);
-            container.Bind<IMessanger>().To<Messanger>()
+            container.Bind<IMessenger>().To<Messenger>()
                 .OnActivation(m =>
                 {
                     m.LogIn();

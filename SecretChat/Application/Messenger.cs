@@ -4,7 +4,7 @@ using SecretChat.Infrastructure;
 
 namespace SecretChat.Application
 {
-    public class Messanger : IMessanger
+    public class Messenger : IMessenger
     {
         private IConnecter<IDialog> connecter;
         private IMessageStream<IMessage> messageStream;
@@ -12,7 +12,7 @@ namespace SecretChat.Application
         private IDialog dialog;
         private IUsersManager usersManager;
 
-        public Messanger(IConnecter<IDialog> connecter, IMessageStream<IMessage> messageStream, 
+        public Messenger(IConnecter<IDialog> connecter, IMessageStream<IMessage> messageStream, 
             IUsersManager usersManager, IInteracter interacter)
         {
             this.connecter = connecter;

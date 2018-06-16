@@ -10,12 +10,12 @@
       <e p="SecretChat" t="IncludeRecursive">
         <e p="App.config" t="Include" />
         <e p="Application" t="Include">
-          <e p="IMessanger.cs" t="Include" />
-          <e p="Messanger.cs" t="Include" />
+          <e p="IMessenger.cs" t="Include" />
+          <e p="Messenger.cs" t="Include" />
         </e>
         <e p="Domain" t="Include">
-          <e p="InteractionWithSomeMessanger" t="Include">
-            <e p="AbstractInteractionWithMessanger" t="Include">
+          <e p="InteractionWithSomeMessenger" t="Include">
+            <e p="AbstractInteractionWithMessenger" t="Include">
               <e p="IApiRequests.cs" t="Include" />
               <e p="IConnecter.cs" t="Include" />
               <e p="IDialog.cs" t="Include" />
